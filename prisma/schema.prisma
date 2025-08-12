@@ -1,0 +1,17 @@
+// Prisma schema for selfie contest submissions
+// Run `npx prisma migrate dev` after editing this file
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model SelfieSubmission {
+  id        String   @id @default(uuid())
+  instagram String
+  createdAt DateTime @default(now())
+}
