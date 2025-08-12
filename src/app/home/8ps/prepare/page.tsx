@@ -60,7 +60,7 @@ function FancyQuiz() {
     }
   }
 
-  function handleUserInfoSubmit(e) {
+  function handleUserInfoSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!name || !mobile) {
       setError("Please enter both name and mobile number.");
@@ -70,13 +70,28 @@ function FancyQuiz() {
     setStep("quiz");
   }
 
-  function handleAnswer(idx, value) {
+  interface QuizQuestion {
+    question: string;
+    options: string[];
+    answer: string;
+  }
+
+  type Step = "start" | "userinfo" | "quiz" | "result";
+
+  function handleAnswer(idx: number, value: string): void {
     const newAnswers = [...answers];
     newAnswers[idx] = value;
     setAnswers(newAnswers);
   }
 
-  function handleQuizSubmit(e) {
+  interface QuizSubmitPayload {
+    name: string;
+    mobile: string;
+    answers: string[];
+    score: number;
+  }
+
+  function handleQuizSubmit(e: React.FormEvent<HTMLFormElement>): void {
     e.preventDefault();
     let newScore = 0;
     quizQuestions.forEach((q, i) => {
@@ -85,10 +100,11 @@ function FancyQuiz() {
     setScore(newScore);
     setStep("result");
     // Submit to API
+    const payload: QuizSubmitPayload = { name, mobile, answers, score: newScore };
     fetch("/api/quiz/submit", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, mobile, answers, score }),
+      body: JSON.stringify(payload),
     }).then(() => setSubmitted(true));
   }
 
