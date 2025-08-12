@@ -2,6 +2,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 
+declare global {
+  interface Window {
+    google?: any;
+    googleTranslateElementInit?: () => void;
+  }
+}
+
 const bgImages = [
   "/bg1.png",
   "/bg2.png",
