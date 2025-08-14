@@ -1,3 +1,77 @@
+/* Mahaavatar Quiz Custom Styles */
+.quiz-grid {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.quiz-question-box {
+  min-width: 220px;
+  max-width: 320px;
+  min-height: 220px;
+  box-sizing: border-box;
+  background: #fffbe6;
+  border: 2px solid #ffe082;
+  box-shadow: 0 2px 12px rgba(255,224,130,0.18);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 0 auto;
+}
+.quiz-question-box img {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 1rem;
+  border: 1px solid #ffe082;
+}
+.drop-area {
+  width: 100%;
+  min-height: 40px;
+  background: #fffde4;
+  border-radius: 0.75rem;
+  font-size: 1rem;
+}
+.answer-row {
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.answer-img {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #ffe082;
+  background: #fffbe6;
+  box-shadow: 0 1px 6px rgba(255,224,130,0.12);
+  transition: transform 0.2s;
+}
+.answer-img:hover {
+  transform: scale(1.12);
+  border-color: #ffd700;
+}
+@media (max-width: 700px) {
+  .quiz-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .quiz-question-box {
+    min-width: 90vw;
+    max-width: 98vw;
+  }
+  .answer-row {
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+  .answer-img {
+    width: 40px;
+    height: 40px;
+  }
+}
 /* 8Ps Fancy Menu Bar */
 /* 8Ps Simplified Top Menu Bar */
 .ps-menu-bar-simple {
@@ -115,6 +189,21 @@
   position: relative;
   transition: background 0.3s, box-shadow 0.3s, border 0.3s;
 }
+
+.comeCustomBox1 {
+  background: rgba(30,30,30,0.68);
+  color: #fff;
+  border-radius: 1.25rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+  border: 1px solid rgba(255,255,255,0.10);
+  padding: 2rem 1.5rem;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  backdrop-filter: blur(5px);
+  position: relative;
+  transition: background 0.3s, box-shadow 0.3s, border 0.3s;
+}
 .optionFull {
   min-width: 180px;
   flex: 1 1 0;
@@ -137,22 +226,22 @@
 .homeCustomBox {
   max-width: 540px;
 }
-.homeCustomBox h1, .homeCustomBox h2, .homeCustomBox a {
+.homeCustomBox h1, .homeCustomBox h2, .homeCustomBox a, .comeCustomBox1 h1, .comeCustomBox1 h2, .comeCustomBox1 a {
   text-shadow: 0 2px 8px rgba(0,0,0,0.55);
 }
-.homeCustomBox h1 {
+.homeCustomBox h1, .comeCustomBox1 h1 {
   font-size: 2rem;
   font-weight: 700;
   margin-bottom: 1.5rem;
   text-align: center;
 }
-.homeCustomBox h2 {
+.homeCustomBox h2, .comeCustomBox1 h2 {
   font-size: 1.2rem;
   font-weight: 600;
   margin-bottom: 0.7rem;
   color: #ffe082;
 }
-.homeCustomBox .option {
+.homeCustomBox .option, .comeCustomBox1 .option {
   display: flex;
   align-items: center;
   gap: 0.6rem;
@@ -171,25 +260,25 @@
   margin-bottom: 0;
 }
 @media (max-width: 700px) {
-  .homeCustomBox .optionRow {
+  .homeCustomBox .optionRow, .comeCustomBox1 .optionRow {
     flex-direction: column;
     gap: 0.7rem;
     align-items: stretch;
   }
-  .homeCustomBox .option {
+  .homeCustomBox .option, .comeCustomBox1 .option {
     font-size: 0.98rem;
     padding: 0.48rem 0.7rem;
   }
-  .homeCustomBox .option svg {
+  .homeCustomBox .option svg, .comeCustomBox1 .option svg {
     font-size: 1.1em !important;
   }
 }
-.homeCustomBox .optionFancy {
+.homeCustomBox .optionFancy, .comeCustomBox1 .optionFancy {
   background: linear-gradient(90deg, rgba(255,255,255,0.13) 0%, rgba(255,255,255,0.07) 100%);
   box-shadow: 0 4px 12px 0 rgba(0,0,0,0.10);
   border: 1px solid rgba(255,255,255,0.10);
 }
-.homeCustomBox .option:hover, .homeCustomBox .optionFancy:hover {
+.homeCustomBox .option:hover, .comeCustomBox1 .optionFancy:hover {
   background: #ffe082;
   color: #222;
   transform: translateY(-2px) scale(1.04);
@@ -200,7 +289,7 @@
     max-width: 98vw;
   }
 }
-.homeCustomBox .optionRow {
+.homeCustomBox .optionRow, .comeCustomBox1 .optionRow {
   display: flex;
   flex-direction: row;
   gap: 1.2rem;
@@ -209,21 +298,21 @@
   margin-bottom: 0.5rem;
 }
 @media (max-width: 700px) {
-  .homeCustomBox .optionRow {
+  .homeCustomBox .optionRow, .comeCustomBox1 .optionRow {
     flex-direction: column;
     gap: 0.7rem;
     align-items: stretch;
   }
 }
 @media (max-width: 600px) {
-  .homeCustomBox {
+  .homeCustomBox, .comeCustomBox1 {
     padding: 1rem 0.3rem;
     max-width: 98vw;
   }
-  .homeCustomBox h1 {
+  .homeCustomBox h1, .comeCustomBox1 h1 {
     font-size: 1.1rem;
   }
-  .homeCustomBox h2 {
+  .homeCustomBox h2, .comeCustomBox1 h2 {
     font-size: 1rem;
   }
 }

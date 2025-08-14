@@ -34,6 +34,7 @@ export default function HomePage() {
             <h2 className="flex items-center gap-2 mb-3"><FaCamera className="text-pink-400" /> Contest Challenge</h2>
             <div className="optionRow">
               <Link href="/home/selfie-contest" className="option optionFancy optionFull"><FaCamera /> Selfie Contest</Link>
+              <Link href="/home/mahaavatar-quiz" className="option optionFancy optionFull"><FaGift /> Mahaavatar Quiz</Link>
             </div>
           </div>
         </section>

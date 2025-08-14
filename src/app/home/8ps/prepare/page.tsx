@@ -1,13 +1,48 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { ProgressBarFloating } from "../../../../components/ProgressBarFloating";
 import PsMenuBar from "../PsMenuBar";
-import { useState } from "react";
 import "../../home-custom.css";
 
-export default function PreparePage() {
+
+function PreparePage() {
+  // Progress state for all Ps
+  const [progress, setProgress] = useState<{ [key: string]: number }>({});
+  const [userId, setUserId] = useState<string | null>(null);
+
+  // List of all Ps in order
+  const psList = [
+    "Prepare", "Pray", "Perform", "Participate", "Purchase", "Perfect", "Perceive", "Pledge"
+  ];
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedId = localStorage.getItem("userId");
+      if (storedId) {
+        setUserId(storedId);
+        fetch(`/api/progress/user?id=${storedId}`)
+          .then(res => res.json())
+          .then(data => {
+            if (data.success && Array.isArray(data.progress)) {
+              const progObj: { [key: string]: number } = {};
+              data.progress.forEach((p: any) => {
+                progObj[p.pName] = p.percent;
+              });
+              setProgress(progObj);
+            }
+          });
+      }
+    }
+  }, []);
+
   return (
-    <>
-      <PsMenuBar />
+      <>
+        <PsMenuBar />
+        <ProgressBarFloating
+          progress={Math.round((Object.values(progress).filter(v => v >= 12.5).length / psList.length) * 100)}
+          completedPs={psList.filter(p => (progress[p] || 0) >= 12.5)}
+          psList={psList}
+        />
       <div className="content-overlay">
         <div className="homeCustomBox flex flex-col items-center mx-auto">
           <h2 className="fancyTitle">Prepare for Janmashtami</h2>
@@ -23,6 +58,11 @@ export default function PreparePage() {
   );
 }
 function FancyQuiz() {
+  const QUIZ_TYPE = "prepare";
+  const QUIZ_TITLE = "Prepare Quiz";
+  const MAX_SCORE = 3;
+  const P_NAME = "Prepare";
+  const TOTAL_PS = 8;
   const quizQuestions = [
     {
       question: "Who appeared as the 8th child of Vasudeva and Devaki?",
@@ -41,42 +81,72 @@ function FancyQuiz() {
     },
   ];
 
-  const [step, setStep] = useState("start");
-  const [name, setName] = useState("");
-  const [mobile, setMobile] = useState("");
+  const [step, setStep] = useState<"start" | "userinfo" | "quiz" | "result">("start");
+  const [userId, setUserId] = useState<string | null>(null);
+  const [userInfo, setUserInfo] = useState({ name: "", mobile: "", gender: "", address: "" });
   const [answers, setAnswers] = useState(Array(quizQuestions.length).fill(""));
   const [score, setScore] = useState(0);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
+  const [loadingUser, setLoadingUser] = useState(false);
 
-  // Simulate user info check (replace with real check if available)
-  const userInfoAvailable = false;
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedId = localStorage.getItem("userId");
+      if (storedId) {
+        setUserId(storedId);
+        setLoadingUser(true);
+        fetch(`/api/user/get?id=${storedId}`)
+          .then(res => res.json())
+          .then(data => {
+            if (data.success && data.user) {
+              setUserInfo({
+                name: data.user.name,
+                mobile: data.user.mobile,
+                gender: data.user.gender,
+                address: data.user.address,
+              });
+            }
+          })
+          .finally(() => setLoadingUser(false));
+      }
+    }
+  }, []);
 
   function handleProceed() {
-    if (!userInfoAvailable) {
+    if (!userId) {
       setStep("userinfo");
     } else {
       setStep("quiz");
     }
   }
 
-  function handleUserInfoSubmit(e: React.FormEvent<HTMLFormElement>) {
+  function handleUserInfoChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
+    setUserInfo({ ...userInfo, [e.target.name]: e.target.value });
+  }
+
+  async function handleUserInfoSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (!name || !mobile) {
-      setError("Please enter both name and mobile number.");
+    if (!userInfo.name || !userInfo.mobile || !userInfo.gender || !userInfo.address) {
+      setError("Please fill all details.");
       return;
     }
     setError("");
-    setStep("quiz");
+    // Submit user info to quiz API to get userId
+    const res = await fetch("/api/quiz/submit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...userInfo, answers: [], score: 0, quizType: QUIZ_TYPE, quizTitle: QUIZ_TITLE, maxScore: MAX_SCORE, pName: P_NAME, percent: 0 }),
+    });
+    const data = await res.json();
+    if (data.success && data.userId) {
+      setUserId(data.userId);
+      if (typeof window !== "undefined") localStorage.setItem("userId", data.userId);
+      setStep("quiz");
+    } else {
+      setError("Could not save user info. Try again.");
+    }
   }
-
-  interface QuizQuestion {
-    question: string;
-    options: string[];
-    answer: string;
-  }
-
-  type Step = "start" | "userinfo" | "quiz" | "result";
 
   function handleAnswer(idx: number, value: string): void {
     const newAnswers = [...answers];
@@ -84,14 +154,7 @@ function FancyQuiz() {
     setAnswers(newAnswers);
   }
 
-  interface QuizSubmitPayload {
-    name: string;
-    mobile: string;
-    answers: string[];
-    score: number;
-  }
-
-  function handleQuizSubmit(e: React.FormEvent<HTMLFormElement>): void {
+  async function handleQuizSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     let newScore = 0;
     quizQuestions.forEach((q, i) => {
@@ -99,13 +162,15 @@ function FancyQuiz() {
     });
     setScore(newScore);
     setStep("result");
+    // Calculate percent for this P (1/8 * 100 if completed)
+    const percent = newScore === MAX_SCORE ? (1 / TOTAL_PS) * 100 : 0;
     // Submit to API
-    const payload: QuizSubmitPayload = { name, mobile, answers, score: newScore };
-    fetch("/api/quiz/submit", {
+    await fetch("/api/quiz/submit", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    }).then(() => setSubmitted(true));
+      body: JSON.stringify({ userId, answers, score: newScore, quizType: QUIZ_TYPE, quizTitle: QUIZ_TITLE, maxScore: MAX_SCORE, pName: P_NAME, percent }),
+    });
+    setSubmitted(true);
   }
 
   return (
@@ -117,8 +182,15 @@ function FancyQuiz() {
       )}
       {step === "userinfo" && (
         <form className="flex flex-col gap-4 items-center" onSubmit={handleUserInfoSubmit}>
-          <input className="input-fancy" type="text" placeholder="Your Name" value={name} onChange={e => setName(e.target.value)} />
-          <input className="input-fancy" type="tel" placeholder="Mobile Number" value={mobile} onChange={e => setMobile(e.target.value)} />
+          <input className="input-fancy" name="name" type="text" placeholder="Your Name" value={userInfo.name} onChange={handleUserInfoChange} />
+          <input className="input-fancy" name="mobile" type="tel" placeholder="Mobile Number" value={userInfo.mobile} onChange={handleUserInfoChange} />
+          <select className="input-fancy" name="gender" value={userInfo.gender} onChange={handleUserInfoChange}>
+            <option value="">Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+          <input className="input-fancy" name="address" type="text" placeholder="Address" value={userInfo.address} onChange={handleUserInfoChange} />
           {error && <div className="text-red-500 text-sm">{error}</div>}
           <button className="fancy-btn px-6 py-2 rounded-full bg-yellow-500 text-white font-bold shadow hover:bg-yellow-600" type="submit">Continue to Quiz</button>
         </form>
@@ -149,3 +221,5 @@ function FancyQuiz() {
     </div>
   );
 }
+
+export default PreparePage;
