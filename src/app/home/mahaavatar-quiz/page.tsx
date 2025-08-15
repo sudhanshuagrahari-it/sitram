@@ -262,7 +262,8 @@ export default function MahaavatarQuizPage() {
           ))}
         </div>
         {!submitted ? (
-          <button className="quiz-submit-btn" onClick={handleSubmit}>Submit Quiz</button>
+          // make this button disabled untill all 10 question is answered
+          <button className="quiz-submit-btn" onClick={handleSubmit} disabled={userAnswers.length < 10}>Submit Quiz</button>
         ) : (
           <div className="quiz-result-box">
             <div className="quiz-result-title">Quiz Completed!</div>

@@ -48,16 +48,7 @@ const shlokaData = [
     shloka: `nāma-saṅkīrtanaṁ yasya\nsarva-pāpa praṇāśanam\npraṇāmo duḥkha-śamanas\ntaṁ namāmi hariṁ param`,
     synonyms: `nāma-saṅkīrtanam — the congregational chanting of the holy name; yasya — of whom; sarva-pāpa — all sins; praṇāśanam — which destroys; praṇāmaḥ — the bowing down; duḥkha — misery; śamanaḥ — which subdues; tam — to Him; namāmi — I offer my obeisances; harim — to Lord Hari; param — the Supreme.`,
     translation: `I offer my respectful obeisances unto the Supreme Lord, Hari, the congregational chanting of whose holy names destroys all sinful reactions, and the offering of obeisances unto whom relieves all material suffering.`
-  },
-  {
-    id: 6,
-    title: "Shloka 6",
-
-    audio: "/audio/BG 4.9.mp3",
-    shloka: `janma karma ca me divyam\nevaṁ yo vetti tattvataḥ\ntyaktvā dehaṁ punar janma\nnaiti mām eti so ’rjuna`,
-    synonyms: `janma — birth; karma — work; ca — also; me — of Mine; divyam — transcendental; evam — like this; yaḥ — anyone who; vetti — knows; tattvataḥ — in reality; tyaktvā — leaving aside; deham — this body; punaḥ — again; janma — birth; na — never; eti — does attain; mām — unto Me; eti — does attain; saḥ — he; arjuna — O Arjuna.`,
-    translation: `One who knows the transcendental nature of My appearance and activities does not, upon leaving the body, take his birth again in this material world, but attains My eternal abode, O Arjuna.`
-  },
+  }
 ];
 
 export default function ShlokaDetailPage() {
@@ -123,9 +114,7 @@ export default function ShlokaDetailPage() {
         score: 1,
         quizType: `shloka${id}`,
         quizTitle: shloka.title,
-        maxScore: 1,
-        pName: "ShlokaContest",
-        percent: 12.5
+        maxScore: 1
       })
     });
     if (res.ok) {
