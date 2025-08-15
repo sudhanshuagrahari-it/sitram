@@ -145,7 +145,7 @@ export default function MahaavatarQuizPage() {
     await fetch("/api/quiz/submit", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId, answers: userAnswers, score: s, quizType: QUIZ_TYPE, quizTitle: QUIZ_TITLE, maxScore: MAX_SCORE }),
+      body: JSON.stringify({ ...userInfo, answers: userAnswers, score: s, quizType: QUIZ_TYPE, quizTitle: QUIZ_TITLE, maxScore: MAX_SCORE }),
     });
   };
 

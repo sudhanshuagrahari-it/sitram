@@ -146,6 +146,7 @@ function PledgeQuiz() {
       return;
     }
     setError("");
+
     // Submit user info to quiz API to get userId
     const res = await fetch("/api/quiz/submit", {
       method: "POST",
@@ -184,7 +185,7 @@ function PledgeQuiz() {
     await fetch("/api/quiz/submit", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId, answers: [pledge], score: newScore, quizType: QUIZ_TYPE, quizTitle: QUIZ_TITLE, maxScore: MAX_SCORE, pName: P_NAME, percent }),
+      body: JSON.stringify({ ...userInfo, answers: [pledge], score: newScore, quizType: QUIZ_TYPE, quizTitle: QUIZ_TITLE, maxScore: MAX_SCORE, pName: P_NAME, percent }),
     });
     setSubmitted(true);
     setStep("result");
