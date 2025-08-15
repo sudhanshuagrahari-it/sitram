@@ -4,12 +4,59 @@ import React, { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 
 const shlokaData = [
-  { id: 1, title: "Shloka 1", img: "/images/shloka1.png", content: "Content for Shloka 1." },
-  { id: 2, title: "Shloka 2", img: "/images/shloka2.png", content: "Content for Shloka 2." },
-  { id: 3, title: "Shloka 3", img: "/images/shloka3.png", content: "Content for Shloka 3." },
-  { id: 4, title: "Shloka 4", img: "/images/shloka4.png", content: "Content for Shloka 4." },
-  { id: 5, title: "Shloka 5", img: "/images/shloka5.png", content: "Content for Shloka 5." },
-  { id: 6, title: "Shloka 6", img: "/images/shloka6.png", content: "Content for Shloka 6." },
+  {
+    id: 1,
+    title: "Divinity of Lord Krsna",
+    audio: "/audio/BG 4.9.mp3",
+    shloka: `janma karma ca me divyam\nevaṁ yo vetti tattvataḥ\ntyaktvā dehaṁ punar janma\nnaiti mām eti so ’rjuna`,
+    synonyms: `janma — birth; karma — work; ca — also; me — of Mine; divyam — transcendental; evam — like this; yaḥ — anyone who; vetti — knows; tattvataḥ — in reality; tyaktvā — leaving aside; deham — this body; punaḥ — again; janma — birth; na — never; eti — does attain; mām — unto Me; eti — does attain; saḥ — he; arjuna — O Arjuna.`,
+    translation: `One who knows the transcendental nature of My appearance and activities does not, upon leaving the body, take his birth again in this material world, but attains My eternal abode, O Arjuna.`
+  },
+  {
+    id: 2,
+    title: "Devotion to Lord Krsna",
+    
+    audio: "/audio/BG 9.26.mp3",
+    shloka: `patraṁ puṣpaṁ phalaṁ toyaṁ\nyo me bhaktyā prayacchati\ntad ahaṁ bhakty-upahṛtam\naśnāmi prayatātmanaḥ`,
+    synonyms: `patram — a leaf; puṣpam — a flower; phalam — a fruit; toyam — water; yaḥ — whoever; me — unto Me; bhaktyā — with devotion; prayacchati — offers; tat — that; aham — I; bhakti-upahṛtam — offered in devotion; aśnāmi — accept; prayata-ātmanaḥ — from one in pure consciousness.`,
+    translation: `If one offers Me with love and devotion a leaf, a flower, a fruit or water, I will accept it.`
+  },
+  {
+    id: 3,
+    title: "Description of Lord Krsna",
+    
+    audio: "/audio/BG 9.34.mp3",
+    shloka: `namaḥ paṅkaja-nābhāya\nnamaḥ paṅkaja-māline\nnamaḥ paṅkaja-netrāya\nnamas te paṅkajāṅghraye`,
+    synonyms: `namaḥ — all respectful obeisances; paṅkaja-nābhāya — unto the Lord who has a specific depression resembling a lotus flower in the center of His abdomen; namaḥ — obeisances; paṅkaja-māline — one who is always decorated with a garland of lotus flowers; namaḥ — obeisances; paṅkaja-netrāya — one whose glance is as cooling as a lotus flower; namaḥ te — respectful obeisances unto You; paṅkaja-aṅghraye — unto You, the soles of whose feet are engraved with lotus flowers (and who are therefore said to possess lotus feet).`,
+    translation: `My respectful obeisances are unto You, O Lord, whose abdomen is marked with a depression like a lotus flower, who are always decorated with garlands of lotus flowers, whose glance is as cool as the lotus and whose feet are engraved with lotuses.`
+  },
+  {
+    id: 4,
+    title: "Dedication to Lord Krsna",
+    
+    audio: "/audio/Namah pankaja nabhaya.mp3",
+    shloka: `man-manā bhava mad-bhakto\nmad-yājī māṁ namaskuru\nmām evaiṣyasi yuktvaivam\nātmānaṁ mat-parāyaṇaḥ`,
+    synonyms: `mat-manāḥ — always thinking of Me; bhava — become; mat — My; bhaktaḥ — devotee; mat — My; yājī — worshiper; mām — unto Me; namas-kuru — offer obeisances; mām — unto Me; eva — completely; eṣyasi — you will come; yuktvā — being absorbed; evam — thus; ātmānam — your soul; mat-parāyaṇaḥ — devoted to Me.`,
+    translation: `Engage your mind always in thinking of Me, become My devotee, offer obeisances to Me and worship Me. Being completely absorbed in Me, surely you will come to Me.`
+  },
+  {
+    id: 5,
+    title: "Deepen connection with lord Krsna",
+    
+    audio: "/audio/Namasankirtanam Yasya.mp3",
+    shloka: `nāma-saṅkīrtanaṁ yasya\nsarva-pāpa praṇāśanam\npraṇāmo duḥkha-śamanas\ntaṁ namāmi hariṁ param`,
+    synonyms: `nāma-saṅkīrtanam — the congregational chanting of the holy name; yasya — of whom; sarva-pāpa — all sins; praṇāśanam — which destroys; praṇāmaḥ — the bowing down; duḥkha — misery; śamanaḥ — which subdues; tam — to Him; namāmi — I offer my obeisances; harim — to Lord Hari; param — the Supreme.`,
+    translation: `I offer my respectful obeisances unto the Supreme Lord, Hari, the congregational chanting of whose holy names destroys all sinful reactions, and the offering of obeisances unto whom relieves all material suffering.`
+  },
+  {
+    id: 6,
+    title: "Shloka 6",
+
+    audio: "/audio/BG 4.9.mp3",
+    shloka: `janma karma ca me divyam\nevaṁ yo vetti tattvataḥ\ntyaktvā dehaṁ punar janma\nnaiti mām eti so ’rjuna`,
+    synonyms: `janma — birth; karma — work; ca — also; me — of Mine; divyam — transcendental; evam — like this; yaḥ — anyone who; vetti — knows; tattvataḥ — in reality; tyaktvā — leaving aside; deham — this body; punaḥ — again; janma — birth; na — never; eti — does attain; mām — unto Me; eti — does attain; saḥ — he; arjuna — O Arjuna.`,
+    translation: `One who knows the transcendental nature of My appearance and activities does not, upon leaving the body, take his birth again in this material world, but attains My eternal abode, O Arjuna.`
+  },
 ];
 
 export default function ShlokaDetailPage() {
@@ -82,8 +129,21 @@ export default function ShlokaDetailPage() {
       <div className="homeCustomBox flex flex-col items-center mx-auto max-w-2xl">
         <button className="self-start mb-4 text-yellow-200 hover:text-yellow-400" onClick={() => router.push("/home/shloka-contest")}>← Back to Shloka List</button>
         <h2 className="fancyTitle mb-4">{shloka.title}</h2>
-        <img src={shloka.img} alt={shloka.title} className="rounded-xl w-40 h-40 object-cover border-2 border-yellow-200 mb-4" />
-        <div className="mb-6 text-lg text-yellow-100 text-center">{shloka.content}</div>
+        {shloka.audio && (
+          <audio controls className="mb-4">
+            <source src={shloka.audio} type="audio/mpeg" />
+            Your browser does not support the audio element.
+          </audio>
+        )}
+        {shloka.shloka && (
+          <div className="mb-2 text-xl text-yellow-100 text-center whitespace-pre-line font-serif font-bold">{shloka.shloka}</div>
+        )}
+        {shloka.synonyms && (
+          <div className="mb-2 text-base text-yellow-200"><b>Synonyms:</b> {shloka.synonyms}</div>
+        )}
+        {shloka.translation && (
+          <div className="mb-6 text-lg text-yellow-100 text-center"><b>Translation:</b> {shloka.translation}</div>
+        )}
         <div className="flex gap-4 mb-8">
           <button className="fancy-btn px-6 py-2 rounded-full bg-yellow-500 text-white font-bold shadow hover:bg-yellow-600" disabled={idx === 0} onClick={() => router.push(`/home/shloka-contest/${shlokaData[idx - 1].id}`)}>Previous</button>
           <button className="fancy-btn px-6 py-2 rounded-full bg-yellow-500 text-white font-bold shadow hover:bg-yellow-600" disabled={idx === shlokaData.length - 1} onClick={() => router.push(`/home/shloka-contest/${shlokaData[idx + 1].id}`)}>Next</button>
@@ -100,7 +160,6 @@ export default function ShlokaDetailPage() {
                   <option value="">Select Gender</option>
                   <option value="Male">Male</option>
                   <option value="Female">Female</option>
-                  <option value="Other">Other</option>
                 </select>
                 <select className="input-fancy" name="maritalStatus" value={userInfo.maritalStatus} onChange={handleUserInfoChange}>
                   <option value="">Select Marital Status</option>

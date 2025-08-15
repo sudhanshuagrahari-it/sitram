@@ -5,11 +5,11 @@ import Link from "next/link";
 
 const shlokaCards = [
   { id: 1, img: "/images/shloka1.png", title: "Shloka 1" },
-  { id: 2, img: "/images/shloka2.png", title: "Shloka 2" },
-  { id: 3, img: "/images/shloka3.png", title: "Shloka 3" },
-  { id: 4, img: "/images/shloka4.png", title: "Shloka 4" },
-  { id: 5, img: "/images/shloka5.png", title: "Shloka 5" },
-  { id: 6, img: "/images/shloka6.png", title: "Shloka 6" },
+  { id: 2, img: "/images/shloka1.png", title: "Shloka 2" },
+  { id: 3, img: "/images/shloka1.png", title: "Shloka 3" },
+  { id: 4, img: "/images/shloka1.png", title: "Shloka 4" },
+  { id: 5, img: "/images/shloka1.png", title: "Shloka 5" },
+  { id: 6, img: "/images/shloka1.png", title: "Shloka 6" },
 ];
 
 export default function ShlokaContestPage() {
@@ -17,7 +17,7 @@ export default function ShlokaContestPage() {
     <div className="content-overlay">
       <div className="homeCustomBox flex flex-col items-center mx-auto">
         <h2 className="fancyTitle mb-6">Shloka Contest</h2>
-        <div className="w-full grid grid-cols-2 grid-rows-3 gap-8 max-w-2xl mb-8">
+        <div className="ps-menu-bar w-full grid grid-cols-2 grid-rows-3 gap-8 max-w-2xl mb-8">
           {shlokaCards.map(card => (
             <Link
               href={`/home/shloka-contest/${card.id}`}
@@ -27,6 +27,7 @@ export default function ShlokaContestPage() {
               <img
                 src={card.img}
                 alt={card.title}
+                style={{ width: "9rem", height: "11rem", objectFit: "cover" }}
                 className="rounded-xl w-28 h-28 object-cover border-2 border-yellow-100 group-hover:border-yellow-400 transition mb-2"
               />
               <div className="font-bold text-lg text-yellow-200 group-hover:text-yellow-400 transition">
