@@ -126,32 +126,32 @@ export default function ShlokaDetailPage() {
 
   return (
     <div className="content-overlay">
-      <div className="homeCustomBox flex flex-col items-center mx-auto max-w-2xl">
-        <button className="self-start mb-4 text-yellow-200 hover:text-yellow-400" onClick={() => router.push("/home/shloka-contest")}>← Back to Shloka List</button>
-        <h2 className="fancyTitle mb-4">{shloka.title}</h2>
+      <div className="homeCustomBox shloka-detail-box">
+        <button className="back-btn" onClick={() => router.push("/home/shloka-contest")}>← Back to Shloka List</button>
+        <h2 className="fancyTitle shloka-title">{shloka.title}</h2>
         {shloka.audio && (
-          <audio controls className="mb-4">
+          <audio controls className="shloka-audio">
             <source src={shloka.audio} type="audio/mpeg" />
             Your browser does not support the audio element.
           </audio>
         )}
         {shloka.shloka && (
-          <div className="mb-2 text-xl text-yellow-100 text-center whitespace-pre-line font-serif font-bold">{shloka.shloka}</div>
+          <div className="shloka-text">{shloka.shloka}</div>
         )}
         {shloka.synonyms && (
-          <div className="mb-2 text-base text-yellow-200"><b>Synonyms:</b> {shloka.synonyms}</div>
+          <div className="shloka-synonyms"><b>Synonyms:</b> {shloka.synonyms}</div>
         )}
         {shloka.translation && (
-          <div className="mb-6 text-lg text-yellow-100 text-center"><b>Translation:</b> {shloka.translation}</div>
+          <div className="shloka-translation"><b>Translation:</b> {shloka.translation}</div>
         )}
-        <div className="flex gap-4 mb-8">
-          <button className="fancy-btn px-6 py-2 rounded-full bg-yellow-500 text-white font-bold shadow hover:bg-yellow-600" disabled={idx === 0} onClick={() => router.push(`/home/shloka-contest/${shlokaData[idx - 1].id}`)}>Previous</button>
-          <button className="fancy-btn px-6 py-2 rounded-full bg-yellow-500 text-white font-bold shadow hover:bg-yellow-600" disabled={idx === shlokaData.length - 1} onClick={() => router.push(`/home/shloka-contest/${shlokaData[idx + 1].id}`)}>Next</button>
+        <div className="shloka-nav-btns">
+          <button className="nav-btn prev-btn" disabled={idx === 0} onClick={() => router.push(`/home/shloka-contest/${shlokaData[idx - 1].id}`)}>Previous</button>
+          <button className="nav-btn next-btn" disabled={idx === shlokaData.length - 1} onClick={() => router.push(`/home/shloka-contest/${shlokaData[idx + 1].id}`)}>Next</button>
         </div>
-        <button className="fancy-btn px-8 py-3 rounded-xl bg-green-600 text-white font-bold shadow-lg hover:bg-green-700 mb-4" onClick={() => setShowTest(true)} disabled={showTest || submitted}>Take Test</button>
+        <button className="take-test-btn" onClick={() => setShowTest(true)} disabled={showTest || submitted}>Take Test</button>
         {showTest && !submitted && (
-          <form className="custom-form-glass flex flex-col gap-4 items-center w-full" onSubmit={handleTestSubmit}>
-            <textarea className="input-fancy w-full min-h-[80px]" placeholder="What have you learnt from this shloka?" value={answer} onChange={e => setAnswer(e.target.value)} />
+          <form className="custom-form-glass shloka-test-form" onSubmit={handleTestSubmit}>
+            <textarea className="input-fancy shloka-answer-input" placeholder="What have you learnt from this shloka?" value={answer} onChange={e => setAnswer(e.target.value)} />
             {!userId && (
               <>
                 <input className="input-fancy" name="name" type="text" placeholder="Your Name" value={userInfo.name} onChange={handleUserInfoChange} />
@@ -169,11 +169,11 @@ export default function ShlokaDetailPage() {
                 <input className="input-fancy" name="address" type="text" placeholder="Address" value={userInfo.address} onChange={handleUserInfoChange} />
               </>
             )}
-            {error && <div className="text-red-500 text-sm">{error}</div>}
-            <button className="fancy-btn px-6 py-2 rounded-full bg-green-500 text-white font-bold shadow hover:bg-green-600 mt-2" type="submit">Submit</button>
+            {error && <div className="form-error-msg">{error}</div>}
+            <button className="submit-btn" type="submit">Submit</button>
           </form>
         )}
-        {submitted && <div className="text-green-200 font-bold mt-4">Saved! Moving to next...</div>}
+        {submitted && <div className="form-success-msg">Saved! Moving to next...</div>}
       </div>
     </div>
   );
