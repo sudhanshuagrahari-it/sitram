@@ -15,28 +15,25 @@ const shlokaCards = [
 export default function ShlokaContestPage() {
   return (
     <div className="content-overlay">
-      <div className="homeCustomBox flex flex-col items-center mx-auto">
-        <h2 className="fancyTitle mb-6">Shloka Contest</h2>
-        <div className="ps-menu-bar w-full grid grid-cols-2 grid-rows-3 gap-8 max-w-2xl mb-8">
+      <div className="homeCustomBox shloka-contest-box">
+        <h2 className="fancyTitle">Shloka Contest</h2>
+        <div className="ps-menu-bar shloka-menu-bar">
           {shlokaCards.map(card => (
             <Link
               href={`/home/shloka-contest/${card.id}`}
               key={card.id}
-              className="ps-menu-item group relative flex flex-col items-center justify-center p-4 rounded-2xl shadow-lg border-2 w-full h-56 transition-all duration-300 bg-gradient-to-br from-white/10 to-black/40 border-yellow-200 hover:scale-105 hover:shadow-2xl"
+              className="ps-menu-item shloka-menu-item"
             >
               <img
                 src={card.img}
                 alt={card.title}
-                style={{ width: "9rem", height: "11rem", objectFit: "cover" }}
-                className="rounded-xl w-28 h-28 object-cover border-2 border-yellow-100 group-hover:border-yellow-400 transition mb-2"
+                className="shloka-menu-img"
               />
-              <div className="font-bold text-lg text-yellow-200 group-hover:text-yellow-400 transition">
-                {card.title}
-              </div>
+              <div className="shloka-menu-title">{card.title}</div>
             </Link>
           ))}
         </div>
-        <p className="text-lg text-center text-yellow-100">Click a shloka to view, learn, and get gifts!</p>
+        <p className="shloka-menu-desc">Click a shloka to view, learn, and get gifts!</p>
       </div>
     </div>
   );

@@ -11,56 +11,56 @@ export default function EightPsPage() {
       name: "Prepare",
       desc: "Sacred preparation",
       href: "/home/8ps/prepare",
-      icon: <FaHandsWash className="text-3xl text-blue-400" />,
+  icon: <FaHandsWash className="ps-icon ps-icon-prepare" />,
       img: "/images/prepare.png"
     },
     {
       name: "Pray",
       desc: "Divine prayers",
       href: "/home/8ps/pray",
-      icon: <FaPrayingHands className="text-3xl text-purple-400" />,
+  icon: <FaPrayingHands className="ps-icon ps-icon-pray" />,
       img: "/images/pray.png"
     },
     {
       name: "Perform",
       desc: "Sacred rituals",
       href: "/home/8ps/perform",
-      icon: <FaRegStar className="text-3xl text-yellow-400" />,
+  icon: <FaRegStar className="ps-icon ps-icon-perform" />,
       img: "/images/perform.png"
     },
     {
       name: "Participate",
       desc: "Community seva",
       href: "/home/8ps/participate",
-      icon: <FaUsers className="text-3xl text-green-400" />,
+  icon: <FaUsers className="ps-icon ps-icon-participate" />,
       img: "/images/participate.png"
     },
     {
       name: "Purchase",
       desc: "Divine offerings",
       href: "/home/8ps/purchase",
-      icon: <FaShoppingBag className="text-3xl text-pink-400" />,
+  icon: <FaShoppingBag className="ps-icon ps-icon-purchase" />,
       img: "/images/purchase.png"
     },
     {
       name: "Perfect",
       desc: "Spiritual programs",
       href: "/home/8ps/perfect",
-      icon: <FaRocket className="text-3xl text-orange-400" />,
+  icon: <FaRocket className="ps-icon ps-icon-perfect" />,
       img: "/images/perfect.png"
     },
     {
       name: "Perceive",
       desc: "Divine gallery",
       href: "/home/8ps/perceive",
-      icon: <FaEye className="text-3xl text-cyan-400" />,
+  icon: <FaEye className="ps-icon ps-icon-perceive" />,
       img: "/images/perceive.png"
     },
     {
       name: "Pledge",
       desc: "Sacred vows",
       href: "/home/8ps/pledge",
-      icon: <FaHandshake className="text-3xl text-red-400" />,
+  icon: <FaHandshake className="ps-icon ps-icon-pledge" />,
       img: "/images/pledge.png"
     },
   ];
@@ -86,15 +86,15 @@ export default function EightPsPage() {
     }
   }, []);
   return (
-    <div className="content-overlay">
+  <div className="content-overlay">
       <ProgressBarFloating
         progress={Math.round((Object.values(progress).filter(v => v >= 12.5).length / psList.length) * 100)}
         completedPs={psList.filter(p => (progress[p] || 0) >= 12.5)}
         psList={psList}
       />
-      <div className="homeCustomBox flex flex-col items-center mx-auto">
-        <h2 className="fancyTitle mb-6">8Ps Divine Journey</h2>
-        <div className="ps-menu-bar w-full flex flex-wrap justify-center gap-6 mb-8">
+  <div className="eightps-main-box">
+  <h2 className="eightps-title">8Ps Divine Journey</h2>
+  <div className="ps-menu-bar">
           {ps.map((p, idx) => {
             const percent = progress[p.name] || 0;
             const completed = percent >= 12.5;
@@ -102,25 +102,21 @@ export default function EightPsPage() {
               <Link
                 href={p.href}
                 key={p.name}
-                className={`ps-menu-item group relative flex flex-col items-center justify-center p-4 rounded-2xl shadow-lg border-2 w-40 h-44 transition-all duration-300
-                  ${completed ? 'bg-green-700 border-green-400 scale-105 shadow-2xl' : 'bg-gradient-to-br from-white/10 to-black/40 border-yellow-200 hover:scale-105 hover:shadow-2xl'}
-                `}
+                className={`ps-menu-item${completed ? ' ps-menu-item-completed' : ''}`}
               >
-                <div className={`mb-2 ${completed ? 'text-white' : ''}`}>{p.icon}</div>
-                <div className={`font-bold text-lg ${completed ? 'text-green-200' : 'text-yellow-200 group-hover:text-yellow-400'} transition`}>
-                  {p.name}
-                </div>
-                <div className={`text-xs mb-2 ${completed ? 'text-green-100' : 'text-white/80'}`}>{p.desc}</div>
+                <div className={`ps-menu-icon${completed ? ' ps-menu-icon-completed' : ''}`}>{p.icon}</div>
+                <div className={`ps-menu-name${completed ? ' ps-menu-name-completed' : ''}`}>{p.name}</div>
+                <div className={`ps-menu-desc${completed ? ' ps-menu-desc-completed' : ''}`}>{p.desc}</div>
                 {completed ? (
-                  <span className="absolute bottom-2 right-2 text-xs text-green-200 font-bold">Completed</span>
+                  <span className="ps-menu-status ps-menu-status-completed">Completed</span>
                 ) : (
-                  <span className="absolute bottom-2 right-2 text-xs text-yellow-100 opacity-60">Click to explore</span>
+                  <span className="ps-menu-status">Click to explore</span>
                 )}
               </Link>
             );
           })}
         </div>
-        <p className="text-lg text-center text-yellow-100">Embark on your spiritual journey by exploring each P below!</p>
+  <p className="eightps-desc">Embark on your spiritual journey by exploring each P below!</p>
       </div>
     </div>
   );

@@ -45,9 +45,9 @@ export default function JapaChallengePage() {
 
   return (
     <div className="content-overlay">
-      <div className="homeCustomBox flex flex-col items-center mx-auto">
-        <h2>Japa Challenge</h2>
-         {/* Hidden audio element */}
+      <div className="homeCustomBox japa-main-box">
+        <h2 className="japa-title">Japa Challenge</h2>
+        {/* Hidden audio element */}
         <audio
           ref={audioRef}
           src="/audio/japa.mp3"
@@ -55,43 +55,25 @@ export default function JapaChallengePage() {
           onEnded={handleEnded}
           style={{ display: "none" }}
         />
-
         {/* Custom Play button */}
         <button
+          className={`japa-play-btn${isPlaying ? ' playing' : ''}`}
           onClick={handlePlayClick}
           disabled={isPlaying}
-          style={{
-            background: isPlaying ? "#ccc" : "#ffe082",
-            padding: "0.5em 1em",
-            borderRadius: "8px",
-            fontWeight: "bold",
-            cursor: isPlaying ? "not-allowed" : "pointer",
-            marginBottom: "1em",
-            opacity: isPlaying ? 0.6 : 1
-          }}
         >
           ▶ Chant Mantra
         </button>
-
         {/* Play count */}
-        <div style={{ marginBottom: "1em", color: "#ccc" }}>
-          Japa Counter: {playCount}
-        </div>
-
-        <div className="mt-6 text-2xl flex flex-wrap gap-2 justify-center">
+        <div className="japa-counter">Japa Counter: {playCount}</div>
+        <div className="japa-mantra-box">
           {words.map((word, idx) => (
             <React.Fragment key={idx}>
-            <span
-              key={idx}
-              style={{
-                color: idx === currentWord ? "#ffe082" : "#fff",
-                fontWeight: idx === currentWord ? "bold" : "normal",
-                transition: "color 0.2s",
-              }}
-            >
-              {word} {" "}
-            </span>
-            {(idx + 1) % 4 === 0 && <br />}
+              <span
+                className={`japa-mantra-word${idx === currentWord ? ' active' : ''}`}
+              >
+                {word} {" "}
+              </span>
+              {(idx + 1) % 4 === 0 && <br />}
             </React.Fragment>
           ))}
         </div>

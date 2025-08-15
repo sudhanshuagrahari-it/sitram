@@ -141,68 +141,41 @@ export default function MahaavatarQuizPage() {
 
   return (
     <div className="content-overlay">
-      <div
-        className="comeCustomBox1 quiz-main-container flex flex-col items-center mx-auto"
-        style={{ width: isMobile ? "100vw" : "1200px", maxWidth: "98vw", margin: "0 auto" }}
-      >
-        <h2 className="fancyTitle mb-4">Mahaavatar Quiz</h2>
-        <p className="mb-6 text-lg text-center max-w-2xl">Drag the correct answer image below each question. Some questions are images, some are text. Good luck!</p>
-        {/* Static time text */}
-        <div className="mb-2 text-right w-full pr-4" style={{color: '#bfa100', fontWeight: 600, fontSize: isMobile ? 18 : 20}}>Time: 4 minutes</div>
+      <div className="comeCustomBox1 quiz-main-box">
+        <h2 className="quiz-title">Mahaavatar Quiz</h2>
+        <p className="quiz-desc">Drag the correct answer image below each question. Some questions are images, some are text. Good luck!</p>
+        <div className="quiz-time">Time: 4 minutes</div>
         {showUserInfo && (
-          <form className="mb-6 p-6 rounded-2xl bg-yellow-50 border-2 border-yellow-300 shadow-lg max-w-lg w-full custom-user-form" onSubmit={handleUserInfoSubmit}>
-            <div className="mb-3 font-bold text-xl text-yellow-900">Please enter your details</div>
-            <input className="input-fancy mb-3 w-full p-3 rounded-lg border border-yellow-300" name="name" placeholder="Name" value={userInfo.name} onChange={handleUserInfoChange} />
-            <input className="input-fancy mb-3 w-full p-3 rounded-lg border border-yellow-300" name="mobile" placeholder="Mobile Number" value={userInfo.mobile} onChange={handleUserInfoChange} />
-            <select className="input-fancy mb-3 w-full p-3 rounded-lg border border-yellow-300" name="gender" value={userInfo.gender} onChange={handleUserInfoChange}>
+          <form className="quiz-user-form" onSubmit={handleUserInfoSubmit}>
+            <div className="quiz-user-form-title">Please enter your details</div>
+            <input className="quiz-user-input" name="name" placeholder="Name" value={userInfo.name} onChange={handleUserInfoChange} />
+            <input className="quiz-user-input" name="mobile" placeholder="Mobile Number" value={userInfo.mobile} onChange={handleUserInfoChange} />
+            <select className="quiz-user-input" name="gender" value={userInfo.gender} onChange={handleUserInfoChange}>
               <option value="">Select Gender</option>
               <option value="Male">Male</option>
               <option value="Female">Female</option>
             </select>
-            <select className="input-fancy" name="maritalStatus" value={userInfo.maritalStatus} onChange={handleUserInfoChange}>
-            <option value="">Select Marital Status</option>
-            <option value="Single">Single</option>
-            <option value="Married">Married</option>
-          </select>
-            <input className="input-fancy mb-3 w-full p-3 rounded-lg border border-yellow-300" name="address" placeholder="Address" value={userInfo.address} onChange={handleUserInfoChange} />
-            {error && <div className="text-red-500 text-sm mb-2">{error}</div>}
-            <button className="fancy-btn px-8 py-3 rounded-xl bg-yellow-500 text-white font-bold shadow-lg hover:bg-yellow-600 w-full text-lg transition-all" type="submit">Save & Continue</button>
+            <select className="quiz-user-input" name="maritalStatus" value={userInfo.maritalStatus} onChange={handleUserInfoChange}>
+              <option value="">Select Marital Status</option>
+              <option value="Single">Single</option>
+              <option value="Married">Married</option>
+            </select>
+            <input className="quiz-user-input" name="address" placeholder="Address" value={userInfo.address} onChange={handleUserInfoChange} />
+            {error && <div className="quiz-user-error">{error}</div>}
+            <button className="quiz-user-btn" type="submit">Save & Continue</button>
           </form>
         )}
         {isMobile && !showUserInfo && (
-          <div className="flex gap-4 mb-4 justify-center">
-            <button className="fancy-btn px-4 py-2 rounded-lg bg-yellow-400 text-white font-bold shadow hover:bg-yellow-600 transition-all" onClick={() => setMobileQIdx(Math.max(0, mobileQIdx - 1))} disabled={mobileQIdx === 0}>Prev</button>
-            <button className="fancy-btn px-4 py-2 rounded-lg bg-yellow-400 text-white font-bold shadow hover:bg-yellow-600 transition-all" onClick={() => setMobileQIdx(Math.min(questions.length - 1, mobileQIdx + 1))} disabled={mobileQIdx === questions.length - 1}>Next</button>
+          <div className="quiz-mobile-nav">
+            <button className="quiz-mobile-btn" onClick={() => setMobileQIdx(Math.max(0, mobileQIdx - 1))} disabled={mobileQIdx === 0}>Prev</button>
+            <button className="quiz-mobile-btn" onClick={() => setMobileQIdx(Math.min(questions.length - 1, mobileQIdx + 1))} disabled={mobileQIdx === questions.length - 1}>Next</button>
           </div>
         )}
-        <div
-          className="quiz-grid gap-6 mb-8"
-          style={{
-            display: "grid",
-            gridTemplateColumns: isMobile ? "1fr" : "repeat(5, 1fr)",
-            gridTemplateRows: isMobile ? "1fr" : "repeat(2, 1fr)",
-            maxWidth: isMobile ? undefined : 1100,
-            margin: "0 auto",
-            gap: isMobile ? 16 : 32
-          }}
-        >
+        <div className="quiz-grid-box">
           {showQuestions.map((q, idx) => (
             <div
               key={q.id}
-              className="quiz-question-box bg-white shadow flex flex-col items-center justify-center"
-              style={{
-                color: "black",
-                minWidth: isMobile ? "90vw" : "180px",
-                maxWidth: isMobile ? "98vw" : "210px",
-                minHeight: isMobile ? "180px" : "250px",
-                height: isMobile ? "auto" : "210px",
-                aspectRatio: "1/1",
-                borderRadius: "1.25rem",
-                padding: "1.5rem",
-                margin: isMobile ? 0 : 8,
-                boxShadow: "0 2px 12px rgba(255,224,130,0.18)",
-                border: "2px solid #ffe082"
-              }}
+              className="quiz-question-box"
               onDragOver={e => e.preventDefault()}
               onDrop={e => {
                 const label = e.dataTransfer.getData("text/plain");
@@ -210,54 +183,38 @@ export default function MahaavatarQuizPage() {
               }}
             >
               {q.type === "image" ? (
-                <img src={q.src} alt={`Q${q.id}`} style={{ width: isMobile ? "140px" : "120px", height: isMobile ? "140px" : "120px", objectFit: "contain", marginBottom: 12, borderRadius: 16 }} />
+                <img src={q.src} alt={`Q${q.id}`} className="quiz-question-img" />
               ) : (
-                <div className="font-semibold text-lg mb-2 text-center">{q.text}</div>
+                <div className="quiz-question-text">{q.text}</div>
               )}
-              <div className="drop-area mt-2 mb-2 p-2 border-2 border-dashed border-yellow-400 rounded-lg min-h-[40px] flex items-center justify-center" style={{ minHeight: 56, width: "100%", background: "#fffde4" }}>
+              <div className="quiz-drop-area">
                 {userAnswers[q.id - 1] ? (
-                  <div className="flex flex-col items-center">
+                  <div className="quiz-drop-answer">
                     <img
                       src={
                         answerImages.find(a => a.label.toLowerCase() === userAnswers[q.id - 1].toLowerCase())?.src || ""
                       }
                       alt={userAnswers[q.id - 1]}
-                      style={{ width: isMobile ? 90 : 100, height: isMobile ? 90 : 100, borderRadius: 10, objectFit: "cover", background: "#fffbe6", border: "2px solid #ffe082" }}
+                      className="quiz-drop-img"
                     />
-                    <span className="font-bold text-green-600 text-xs mt-1">{userAnswers[q.id - 1]}</span>
-                    {/* Unassign button */}
-                    <button type="button" className="text-xs text-red-500 underline mt-1" onClick={() => handleDrop(q.id - 1, "")}>Unassign</button>
+                    <span className="quiz-drop-label">{userAnswers[q.id - 1]}</span>
+                    <button type="button" className="quiz-drop-unassign" onClick={() => handleDrop(q.id - 1, "")}>Unassign</button>
                   </div>
                 ) : (
-                  <span className="text-gray-400">Drop answer here</span>
+                  <span className="quiz-drop-placeholder">Drop answer here</span>
                 )}
               </div>
             </div>
           ))}
         </div>
-        <div className={`answer-row flex flex-wrap justify-center gap-3 mb-8 ${isMobile ? "answer-row-mobile" : ""}`}
-          style={{ maxWidth: isMobile ? undefined : 900 }}>
+        <div className="quiz-answer-row">
           {answerImages.map(ans => (
             <div
               key={ans.id}
-              style={{
-                width: isMobile ? 80 : 110,
-                height: isMobile ? 80 : 110,
-                borderRadius: 14,
-                background: "#fffbe6",
-                border: "2px solid #ffe082",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                margin: 2,
-                boxShadow: "0 1px 6px rgba(255,224,130,0.12)",
-                cursor: "pointer",
-                transition: "transform 0.2s"
-              }}
+              className="quiz-answer-img-box"
               draggable
               onDragStart={e => e.dataTransfer.setData("text/plain", ans.label)}
               onClick={() => {
-                // For mobile tap selection
                 if (isMobile) {
                   handleDrop(mobileQIdx, ans.label);
                 } else {
@@ -269,17 +226,17 @@ export default function MahaavatarQuizPage() {
               <img
                 src={ans.src}
                 alt={ans.label}
-                style={{ width: isMobile ? 78 : 108, height: isMobile ? 78 : 108, objectFit: "cover", borderRadius: 10 }}
+                className="quiz-answer-img"
               />
             </div>
           ))}
         </div>
         {!submitted ? (
-          <button className="fancy-btn px-6 py-2 rounded-full bg-green-500 text-white font-bold shadow hover:bg-green-600" onClick={handleSubmit}>Submit Quiz</button>
+          <button className="quiz-submit-btn" onClick={handleSubmit}>Submit Quiz</button>
         ) : (
-          <div className="text-center mt-4">
-            <div className="text-2xl font-bold mb-2">Quiz Completed!</div>
-            <div className="text-lg mb-4">You scored <span className="text-green-600 font-bold">{score}</span> out of 10!</div>
+          <div className="quiz-result-box">
+            <div className="quiz-result-title">Quiz Completed!</div>
+            <div className="quiz-result-score">You scored <span>{score}</span> out of 10!</div>
           </div>
         )}
       </div>
