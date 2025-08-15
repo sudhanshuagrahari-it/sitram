@@ -9,8 +9,18 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "ISKCON Radha Madan Mohan",
   description: "Welcome to ISKCON Hyderabad interactive portal.",
+  icons: {
+    apple: "https://iskconhyderabad.com/wp-content/uploads/2020/11/Iskcon-logo-black-300x300.png",
+    other: [
+      { rel: "icon", url: "https://iskconhyderabad.com/wp-content/uploads/2020/11/Iskcon-logo-black-100x100.png", sizes: "32x32" },
+      { rel: "icon", url: "https://iskconhyderabad.com/wp-content/uploads/2020/11/Iskcon-logo-black-300x300.png", sizes: "192x192" },
+    ],
+  },
 };
 
+{/* <link rel="icon" href="https://iskconhyderabad.com/wp-content/uploads/2020/11/Iskcon-logo-black-100x100.png" sizes="32x32" />
+<link rel="icon" href="https://iskconhyderabad.com/wp-content/uploads/2020/11/Iskcon-logo-black-300x300.png" sizes="192x192" />
+<link rel="apple-touch-icon" href="https://iskconhyderabad.com/wp-content/uploads/2020/11/Iskcon-logo-black-300x300.png" /> */}
 
 export default function RootLayout({
   children,

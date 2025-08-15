@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, OrderItem } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
 
     // Cart items (OrderItems for this user)
     const user = await prisma.user.findUnique({ where: { mobile } });
-    let cartItems = [];
+    let cartItems: OrderItem[] = [];
     if (user) {
       const orders = await prisma.order.findMany({ where: { userId: user.id }, orderBy: { createdAt: 'desc' }, include: { items: true } });
       cartItems = orders.flatMap(order => order.items);

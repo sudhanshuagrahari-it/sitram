@@ -5,6 +5,7 @@ import "../../../../globals.css";
 import { FaHome } from "react-icons/fa";
 import Link from "next/link";
 
+
 export default function CartSummaryPage() {
   const [cart, setCart] = useState<{ id: number; title: string; price: number; qty: number }[]>([]);
   const [userInfo, setUserInfo] = useState({ name: "", mobile: "", gender: "", address: "" });
@@ -62,7 +63,6 @@ export default function CartSummaryPage() {
         <div className="flex flex-col items-center mb-6">
           <img src="/iskcon-logo.png" alt="ISKCON Logo" className="h-16 mb-2" style={{ filter: 'drop-shadow(0 0 8px #ffe066)' }} />
           <h1 className="text-2xl md:text-3xl font-extrabold text-yellow-300 tracking-wide mb-1 text-center">Welcome to ISKCON</h1>
-          <button className="back-btn" onClick={() => router.push("/home")}>← Back to Home</button>
           <div className="text-yellow-400 text-lg font-semibold mb-2 text-center">Cart Summary</div>
         </div>
 
