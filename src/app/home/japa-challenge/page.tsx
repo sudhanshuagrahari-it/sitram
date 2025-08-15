@@ -5,7 +5,7 @@ import React, { useRef, useState } from "react";
 const text = "Hare Krishna Hare Krishna Krishna Krishna Hare Hare Hare Ram Hare Ram Ram Ram Hare Hare";
 const words = text.split(" ");
 // Example timings in seconds (start time for each word)
-const timings = [0, 1.2, 1.7, 2.07, 2.7, 3.2, 3.6, 4.2, 4.7, 5.2, 5.5, 6.1, 6.6, 7.1, 7.5, 7.8];
+const timings = [0, 1.2, 1.7, 2.07, 2.7, 3.2, 3.6, 4.2, 4.7, 5.2, 5.5, 6.0, 6.4, 6.9, 7.3, 7.6];
 
 export default function JapaChallengePage() {
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -70,12 +70,12 @@ export default function JapaChallengePage() {
             opacity: isPlaying ? 0.6 : 1
           }}
         >
-          ▶ Play
+          ▶ Chant Mantra
         </button>
 
         {/* Play count */}
         <div style={{ marginBottom: "1em", color: "#ccc" }}>
-          Times played: {playCount}
+          Japa Counter: {playCount}
         </div>
 
         <div className="mt-6 text-2xl flex flex-wrap gap-2 justify-center">
@@ -91,7 +91,7 @@ export default function JapaChallengePage() {
             >
               {word} {" "}
             </span>
-            {(idx + 1) % 8 === 0 && <br />}
+            {(idx + 1) % 4 === 0 && <br />}
             </React.Fragment>
           ))}
         </div>

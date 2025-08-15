@@ -5,13 +5,24 @@ const prisma = new PrismaClient();
 
 export async function POST(request: Request) {
   const data = await request.json();
-  const { name, mobile, gender, address, answers, score, quizType, quizTitle, maxScore, pName, percent } = data;
+  const { name, mobile, gender, address, maritalStatus, answers, score, quizType, quizTitle, maxScore, pName, percent } = data;
   try {
     // 1. Find or create user
     const user = await prisma.user.upsert({
       where: { mobile },
-      update: { name, gender, address },
-      create: { name, mobile, gender, address },
+      update: {
+        name,
+        gender,
+        address,
+        ...(maritalStatus !== undefined ? { maritalStatus } : {})
+      },
+      create: {
+        name,
+        mobile,
+        gender,
+        address,
+        ...(maritalStatus !== undefined ? { maritalStatus } : {})
+      },
     });
     // 2. Find or create quiz
     const quiz = await prisma.quiz.upsert({
@@ -39,7 +50,7 @@ export async function POST(request: Request) {
         create: { userId: user.id, pName, completed: percent >= 12.5, percent },
       });
     }
-    return NextResponse.json({ success: true, reward });
+  return NextResponse.json({ success: true, reward, userId: user.id });
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);
     return NextResponse.json({ success: false, error: errorMessage }, { status: 500 });

@@ -101,9 +101,9 @@ function PerformQuiz() {
   // User's matches: array of rightItem indices, or null
   const [userMatches, setUserMatches] = useState<(number | null)[]>([null, null, null]);
 
-  const [step, setStep] = useState<"start" | "userinfo" | "quiz" | "result">("start");
+  const [step, setStep] = useState<"start" | "quiz" | "userinfo" | "result">("start");
   const [userId, setUserId] = useState<string | null>(null);
-  const [userInfo, setUserInfo] = useState({ name: "", mobile: "", gender: "", address: "" });
+  const [userInfo, setUserInfo] = useState({ name: "", mobile: "", gender: "", address: "", maritalStatus: "" });
   // Remove old matches state
   const [reflection, setReflection] = useState("");
   const [score, setScore] = useState(0);
@@ -127,6 +127,7 @@ function PerformQuiz() {
                 mobile: data.user.mobile,
                 gender: data.user.gender,
                 address: data.user.address,
+                maritalStatus: data.user.maritalStatus,
               });
             }
           })
@@ -136,11 +137,7 @@ function PerformQuiz() {
   }, []);
 
   function handleProceed() {
-    if (!userId) {
-      setStep("userinfo");
-    } else {
-      setStep("quiz");
-    }
+    setStep("quiz");
   }
 
   function handleUserInfoChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
@@ -149,7 +146,7 @@ function PerformQuiz() {
 
   async function handleUserInfoSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (!userInfo.name || !userInfo.mobile || !userInfo.gender || !userInfo.address) {
+    if (!userInfo.name || !userInfo.mobile || !userInfo.gender || !userInfo.address || !userInfo.maritalStatus) {
       setError("Please fill all details.");
       return;
     }
@@ -158,13 +155,14 @@ function PerformQuiz() {
     const res = await fetch("/api/quiz/submit", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...userInfo, answers: [], score: 0, quizType: QUIZ_TYPE, quizTitle: QUIZ_TITLE, maxScore: MAX_SCORE, pName: P_NAME, percent: 0 }),
+      body: JSON.stringify({ ...userInfo, answers: [userMatches, reflection], score, quizType: QUIZ_TYPE, quizTitle: QUIZ_TITLE, maxScore: MAX_SCORE, pName: P_NAME, percent: 12.5 }),
     });
     const data = await res.json();
     if (data.success && data.userId) {
       setUserId(data.userId);
       if (typeof window !== "undefined") localStorage.setItem("userId", data.userId);
-      setStep("quiz");
+      setSubmitted(true);
+      setStep("result");
     } else {
       setError("Could not save user info. Try again.");
     }
@@ -212,14 +210,19 @@ function PerformQuiz() {
     setScore(newScore);
     setStep("result");
     // Calculate percent for this P (1/8 * 100 if both correct)
-    const percent = newScore === MAX_SCORE ? (1 / TOTAL_PS) * 100 : 0;
+    const percent = 12.5;
     // Submit to API
+    if (userId) {
     await fetch("/api/quiz/submit", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId, answers: [userMatches, reflection], score: newScore, quizType: QUIZ_TYPE, quizTitle: QUIZ_TITLE, maxScore: MAX_SCORE, pName: P_NAME, percent }),
     });
     setSubmitted(true);
+    setStep("result");
+    } else {
+      setStep("userinfo");
+    }
   }
 
   return (
@@ -237,11 +240,15 @@ function PerformQuiz() {
             <option value="">Select Gender</option>
             <option value="Male">Male</option>
             <option value="Female">Female</option>
-            <option value="Other">Other</option>
+          </select>
+          <select className="input-fancy" name="maritalStatus" value={userInfo.maritalStatus} onChange={handleUserInfoChange}>
+            <option value="">Select Marital Status</option>
+            <option value="Single">Single</option>
+            <option value="Married">Married</option>
           </select>
           <input className="input-fancy" name="address" type="text" placeholder="Address" value={userInfo.address} onChange={handleUserInfoChange} />
           {error && <div className="text-red-500 text-sm">{error}</div>}
-          <button className="fancy-btn px-6 py-2 rounded-full bg-yellow-500 text-white font-bold shadow hover:bg-yellow-600" type="submit">Continue to Quiz</button>
+          <button className="fancy-btn px-6 py-2 rounded-full bg-yellow-500 text-white font-bold shadow hover:bg-yellow-600" type="submit">Continue to result</button>
         </form>
       )}
       {step === "quiz" && (

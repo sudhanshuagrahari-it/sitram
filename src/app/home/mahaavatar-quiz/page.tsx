@@ -41,7 +41,7 @@ export default function MahaavatarQuizPage() {
   const [score, setScore] = useState(0);
   const [tab, setTab] = useState(0); // 0: first 5, 1: next 5
   const [userId, setUserId] = useState<string | null>(null);
-  const [userInfo, setUserInfo] = useState({ name: "", mobile: "", gender: "", address: "" });
+  const [userInfo, setUserInfo] = useState({ name: "", mobile: "", gender: "", address: "", maritalStatus: "" });
   const [showUserInfo, setShowUserInfo] = useState(false);
   const [error, setError] = useState("");
   const [loadingUser, setLoadingUser] = useState(false);
@@ -62,6 +62,7 @@ export default function MahaavatarQuizPage() {
                 mobile: data.user.mobile,
                 gender: data.user.gender,
                 address: data.user.address,
+                maritalStatus: data.user.maritalStatus,
               });
             }
           })
@@ -82,7 +83,7 @@ export default function MahaavatarQuizPage() {
 
   const handleUserInfoSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!userInfo.name || !userInfo.mobile || !userInfo.gender || !userInfo.address) {
+    if (!userInfo.name || !userInfo.mobile || !userInfo.gender || !userInfo.address || !userInfo.maritalStatus) {
       setError("Please fill all details.");
       return;
     }
@@ -123,7 +124,7 @@ export default function MahaavatarQuizPage() {
     });
   };
 
-  // Responsive: 2x5 grid for desktop, 1x5 per tab for mobile
+  // Responsive: 2x5 grid for desktop, 1 question per screen for mobile
   const [windowWidth, setWindowWidth] = useState(1024);
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -134,7 +135,9 @@ export default function MahaavatarQuizPage() {
     }
   }, []);
   const isMobile = windowWidth < 700;
-  const showQuestions = isMobile ? questions.slice(tab * 5, tab * 5 + 5) : questions;
+  // For mobile, show only one question at a time
+  const [mobileQIdx, setMobileQIdx] = useState(0);
+  const showQuestions = isMobile ? [questions[mobileQIdx]] : questions;
 
   return (
     <div className="content-overlay">
@@ -144,6 +147,8 @@ export default function MahaavatarQuizPage() {
       >
         <h2 className="fancyTitle mb-4">Mahaavatar Quiz</h2>
         <p className="mb-6 text-lg text-center max-w-2xl">Drag the correct answer image below each question. Some questions are images, some are text. Good luck!</p>
+        {/* Static time text */}
+        <div className="mb-2 text-right w-full pr-4" style={{color: '#bfa100', fontWeight: 600, fontSize: isMobile ? 18 : 20}}>Time: 4 minutes</div>
         {showUserInfo && (
           <form className="mb-6 p-6 rounded-2xl bg-yellow-50 border-2 border-yellow-300 shadow-lg max-w-lg w-full custom-user-form" onSubmit={handleUserInfoSubmit}>
             <div className="mb-3 font-bold text-xl text-yellow-900">Please enter your details</div>
@@ -153,17 +158,21 @@ export default function MahaavatarQuizPage() {
               <option value="">Select Gender</option>
               <option value="Male">Male</option>
               <option value="Female">Female</option>
-              <option value="Other">Other</option>
             </select>
+            <select className="input-fancy" name="maritalStatus" value={userInfo.maritalStatus} onChange={handleUserInfoChange}>
+            <option value="">Select Marital Status</option>
+            <option value="Single">Single</option>
+            <option value="Married">Married</option>
+          </select>
             <input className="input-fancy mb-3 w-full p-3 rounded-lg border border-yellow-300" name="address" placeholder="Address" value={userInfo.address} onChange={handleUserInfoChange} />
             {error && <div className="text-red-500 text-sm mb-2">{error}</div>}
             <button className="fancy-btn px-8 py-3 rounded-xl bg-yellow-500 text-white font-bold shadow-lg hover:bg-yellow-600 w-full text-lg transition-all" type="submit">Save & Continue</button>
           </form>
         )}
-        {isMobile && (
+        {isMobile && !showUserInfo && (
           <div className="flex gap-4 mb-4 justify-center">
-            <button className="fancy-btn px-4 py-2 rounded-lg bg-yellow-400 text-white font-bold shadow hover:bg-yellow-600 transition-all" onClick={() => setTab(Math.max(0, tab - 1))} disabled={tab === 0}>Prev</button>
-            <button className="fancy-btn px-4 py-2 rounded-lg bg-yellow-400 text-white font-bold shadow hover:bg-yellow-600 transition-all" onClick={() => setTab(Math.min(1, tab + 1))} disabled={tab === 1}>Next</button>
+            <button className="fancy-btn px-4 py-2 rounded-lg bg-yellow-400 text-white font-bold shadow hover:bg-yellow-600 transition-all" onClick={() => setMobileQIdx(Math.max(0, mobileQIdx - 1))} disabled={mobileQIdx === 0}>Prev</button>
+            <button className="fancy-btn px-4 py-2 rounded-lg bg-yellow-400 text-white font-bold shadow hover:bg-yellow-600 transition-all" onClick={() => setMobileQIdx(Math.min(questions.length - 1, mobileQIdx + 1))} disabled={mobileQIdx === questions.length - 1}>Next</button>
           </div>
         )}
         <div
@@ -201,7 +210,7 @@ export default function MahaavatarQuizPage() {
               }}
             >
               {q.type === "image" ? (
-                <img src={q.src} alt={`Q${q.id}`} style={{ width: "100px", height: "100px", objectFit: "contain", marginBottom: 12, borderRadius: 16 }} />
+                <img src={q.src} alt={`Q${q.id}`} style={{ width: isMobile ? "140px" : "120px", height: isMobile ? "140px" : "120px", objectFit: "contain", marginBottom: 12, borderRadius: 16 }} />
               ) : (
                 <div className="font-semibold text-lg mb-2 text-center">{q.text}</div>
               )}
@@ -213,9 +222,11 @@ export default function MahaavatarQuizPage() {
                         answerImages.find(a => a.label.toLowerCase() === userAnswers[q.id - 1].toLowerCase())?.src || ""
                       }
                       alt={userAnswers[q.id - 1]}
-                      style={{ width: 64, height: 64, borderRadius: 10, objectFit: "cover", background: "#fffbe6", border: "2px solid #ffe082" }}
+                      style={{ width: isMobile ? 90 : 100, height: isMobile ? 90 : 100, borderRadius: 10, objectFit: "cover", background: "#fffbe6", border: "2px solid #ffe082" }}
                     />
                     <span className="font-bold text-green-600 text-xs mt-1">{userAnswers[q.id - 1]}</span>
+                    {/* Unassign button */}
+                    <button type="button" className="text-xs text-red-500 underline mt-1" onClick={() => handleDrop(q.id - 1, "")}>Unassign</button>
                   </div>
                 ) : (
                   <span className="text-gray-400">Drop answer here</span>
@@ -230,9 +241,9 @@ export default function MahaavatarQuizPage() {
             <div
               key={ans.id}
               style={{
-                width: isMobile ? 60 : 80,
-                height: isMobile ? 60 : 80,
-                borderRadius: 12,
+                width: isMobile ? 80 : 110,
+                height: isMobile ? 80 : 110,
+                borderRadius: 14,
                 background: "#fffbe6",
                 border: "2px solid #ffe082",
                 display: "flex",
@@ -247,14 +258,18 @@ export default function MahaavatarQuizPage() {
               onDragStart={e => e.dataTransfer.setData("text/plain", ans.label)}
               onClick={() => {
                 // For mobile tap selection
-                const firstEmpty = userAnswers.findIndex(a => !a);
-                if (firstEmpty !== -1) handleDrop(firstEmpty, ans.label);
+                if (isMobile) {
+                  handleDrop(mobileQIdx, ans.label);
+                } else {
+                  const firstEmpty = userAnswers.findIndex(a => !a);
+                  if (firstEmpty !== -1) handleDrop(firstEmpty, ans.label);
+                }
               }}
             >
               <img
                 src={ans.src}
                 alt={ans.label}
-                style={{ width: isMobile ? 58 : 78, height: isMobile ? 58 : 78, objectFit: "cover", borderRadius: 8 }}
+                style={{ width: isMobile ? 78 : 108, height: isMobile ? 78 : 108, objectFit: "cover", borderRadius: 10 }}
               />
             </div>
           ))}

@@ -56,7 +56,6 @@ function ParticipatePage() {
       </div>
     </>
   );
-// ...existing code...
 }
 
 function ParticipateQuiz() {
@@ -82,9 +81,9 @@ function ParticipateQuiz() {
   const correctMatch = [0, 1];
   const [userMatches, setUserMatches] = useState<(number | null)[]>([null, null]);
 
-  const [step, setStep] = useState<"start" | "userinfo" | "quiz" | "result">("start");
+  const [step, setStep] = useState<"start" | "quiz" | "userinfo" | "result">("start");
   const [userId, setUserId] = useState<string | null>(null);
-  const [userInfo, setUserInfo] = useState({ name: "", mobile: "", gender: "", address: "" });
+  const [userInfo, setUserInfo] = useState({ name: "", mobile: "", gender: "", address: "", maritalStatus: "" });
   const [blank, setBlank] = useState("");
   const [score, setScore] = useState(0);
   const [submitted, setSubmitted] = useState(false);
@@ -107,6 +106,7 @@ function ParticipateQuiz() {
                 mobile: data.user.mobile,
                 gender: data.user.gender,
                 address: data.user.address,
+                maritalStatus: data.user.maritalStatus,
               });
             }
           })
@@ -116,35 +116,65 @@ function ParticipateQuiz() {
   }, []);
 
   function handleProceed() {
-    if (!userId) {
-      setStep("userinfo");
-    } else {
-      setStep("quiz");
-    }
+    setStep("quiz");
   }
 
   function handleUserInfoChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
     setUserInfo({ ...userInfo, [e.target.name]: e.target.value });
   }
 
+  async function handleQuizSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    // Check all matches assigned
+    if (userMatches.some(m => m === null)) {
+      setError("Please match all pairs.");
+      return;
+    }
+    if (!blank.trim()) {
+      setError("Please fill in the blank.");
+      return;
+    }
+    setError("");
+    let newScore = 0;
+    // Check match correctness and blank
+    const matchCorrect = userMatches.every((val, idx) => val === correctMatch[idx]);
+    const blankCorrect = blank.trim().toLowerCase().includes("transform");
+    if (matchCorrect && blankCorrect) newScore = 1;
+    setScore(newScore);
+    // Calculate percent for this P (1/8 * 100 if correct)
+    const percent = 12.5;
+    // If userId exists, submit quiz and go to result. If not, go to userinfo form.
+    if (userId) {
+      await fetch("/api/quiz/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, answers: [userMatches, blank], score: newScore, quizType: QUIZ_TYPE, quizTitle: QUIZ_TITLE, maxScore: MAX_SCORE, pName: P_NAME, percent }),
+      });
+      setSubmitted(true);
+      setStep("result");
+    } else {
+      setStep("userinfo");
+    }
+  }
   async function handleUserInfoSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (!userInfo.name || !userInfo.mobile || !userInfo.gender || !userInfo.address) {
+    if (!userInfo.name || !userInfo.mobile || !userInfo.gender || !userInfo.address || !userInfo.maritalStatus) {
       setError("Please fill all details.");
       return;
     }
     setError("");
-    // Submit user info to quiz API to get userId
+    // Submit user info to quiz API to get userId and also submit quiz answers
     const res = await fetch("/api/quiz/submit", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...userInfo, answers: [], score: 0, quizType: QUIZ_TYPE, quizTitle: QUIZ_TITLE, maxScore: MAX_SCORE, pName: P_NAME, percent: 0 }),
+      body: JSON.stringify({ ...userInfo, answers: [userMatches, blank], score, quizType: QUIZ_TYPE, quizTitle: QUIZ_TITLE, maxScore: MAX_SCORE, pName: P_NAME, percent: 12.5 }),
     });
     const data = await res.json();
     if (data.success && data.userId) {
       setUserId(data.userId);
       if (typeof window !== "undefined") localStorage.setItem("userId", data.userId);
-      setStep("quiz");
+      setSubmitted(true);
+      setStep("result");
     } else {
       setError("Could not save user info. Try again.");
     }
@@ -172,36 +202,6 @@ function ParticipateQuiz() {
     setUserMatches(newMatches);
   }
 
-  async function handleQuizSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    // Check all matches assigned
-    if (userMatches.some(m => m === null)) {
-      setError("Please match all pairs.");
-      return;
-    }
-    if (!blank.trim()) {
-      setError("Please fill in the blank.");
-      return;
-    }
-    setError("");
-    let newScore = 0;
-    // Check match correctness and blank
-    const matchCorrect = userMatches.every((val, idx) => val === correctMatch[idx]);
-    const blankCorrect = blank.trim().toLowerCase().includes("transform");
-    if (matchCorrect && blankCorrect) newScore = 1;
-    setScore(newScore);
-    setStep("result");
-    // Calculate percent for this P (1/8 * 100 if correct)
-    const percent = newScore === MAX_SCORE ? (1 / TOTAL_PS) * 100 : 0;
-    // Submit to API
-    await fetch("/api/quiz/submit", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId, answers: [userMatches, blank], score: newScore, quizType: QUIZ_TYPE, quizTitle: QUIZ_TITLE, maxScore: MAX_SCORE, pName: P_NAME, percent }),
-    });
-    setSubmitted(true);
-  }
-
   return (
     <div className="fancy-quiz-box mt-8 p-6 rounded-2xl shadow-xl bg-gradient-to-br from-yellow-50 to-yellow-100 max-w-xl mx-auto">
       {step === "start" && (
@@ -209,23 +209,8 @@ function ParticipateQuiz() {
           Proceed to Complete
         </button>
       )}
-      {step === "userinfo" && (
-        <form className="flex flex-col gap-4 items-center" onSubmit={handleUserInfoSubmit}>
-          <input className="input-fancy" name="name" type="text" placeholder="Your Name" value={userInfo.name} onChange={handleUserInfoChange} />
-          <input className="input-fancy" name="mobile" type="tel" placeholder="Mobile Number" value={userInfo.mobile} onChange={handleUserInfoChange} />
-          <select className="input-fancy" name="gender" value={userInfo.gender} onChange={handleUserInfoChange}>
-            <option value="">Select Gender</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Other">Other</option>
-          </select>
-          <input className="input-fancy" name="address" type="text" placeholder="Address" value={userInfo.address} onChange={handleUserInfoChange} />
-          {error && <div className="text-red-500 text-sm">{error}</div>}
-          <button className="fancy-btn px-6 py-2 rounded-full bg-yellow-500 text-white font-bold shadow hover:bg-yellow-600" type="submit">Continue to Quiz</button>
-        </form>
-      )}
       {step === "quiz" && (
-        <form className="flex flex-col gap-6" onSubmit={handleQuizSubmit}>
+  <form className="custom-form-glass flex flex-col gap-6" onSubmit={handleQuizSubmit}>
           <div className="quiz-question-box p-4 rounded-xl bg-white shadow">
             <div className="font-semibold mb-2">Find the common result of their participation:</div>
             <div className="flex flex-col md:flex-row gap-6 justify-center items-start">
@@ -288,6 +273,25 @@ function ParticipateQuiz() {
           </div>
           {error && <div className="text-red-500 text-sm">{error}</div>}
           <button className="fancy-btn px-6 py-2 rounded-full bg-green-500 text-white font-bold shadow hover:bg-green-600 mt-4" type="submit">Submit Quiz</button>
+        </form>
+      )}
+      {step === "userinfo" && (
+  <form className="custom-form-glass flex flex-col gap-4 items-center" onSubmit={handleUserInfoSubmit}>
+          <input className="input-fancy" name="name" type="text" placeholder="Your Name" value={userInfo.name} onChange={handleUserInfoChange} />
+          <input className="input-fancy" name="mobile" type="tel" placeholder="Mobile Number" value={userInfo.mobile} onChange={handleUserInfoChange} />
+          <select className="input-fancy" name="gender" value={userInfo.gender} onChange={handleUserInfoChange}>
+            <option value="">Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+          <select className="input-fancy" name="maritalStatus" value={userInfo.maritalStatus} onChange={handleUserInfoChange}>
+            <option value="">Select Marital Status</option>
+            <option value="Single">Single</option>
+            <option value="Married">Married</option>
+          </select>
+          <input className="input-fancy" name="address" type="text" placeholder="Address" value={userInfo.address} onChange={handleUserInfoChange} />
+          {error && <div className="text-red-500 text-sm">{error}</div>}
+          <button className="fancy-btn px-6 py-2 rounded-full bg-yellow-500 text-white font-bold shadow hover:bg-yellow-600" type="submit">Continue to Result</button>
         </form>
       )}
       {step === "result" && (
