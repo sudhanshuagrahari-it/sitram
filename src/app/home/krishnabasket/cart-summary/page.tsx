@@ -1,7 +1,9 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import "../../../home-custom.css";
-import "../../../../../globals.css";
+import "../../home-custom.css";
+import "../../../../globals.css";
+import { FaHome } from "react-icons/fa";
+import Link from "next/link";
 
 export default function CartSummaryPage() {
   const [cart, setCart] = useState<{ id: number; title: string; price: number; qty: number }[]>([]);
@@ -46,7 +48,7 @@ export default function CartSummaryPage() {
       });
       if (res.ok) {
         localStorage.removeItem("cart");
-        localStorage.removeItem("userInfo");
+        //localStorage.removeItem("userInfo");
         setCart([]);
         setStep("placed");
       } else {
@@ -69,7 +71,6 @@ export default function CartSummaryPage() {
               <option value="">Select Gender</option>
               <option value="Male">Male</option>
               <option value="Female">Female</option>
-              <option value="Other">Other</option>
             </select>
             <input className="input-fancy" name="address" type="text" placeholder="Address" value={userInfo.address} onChange={handleUserInfoChange} />
             {error && <div className="text-red-500 text-sm">{error}</div>}
@@ -79,6 +80,9 @@ export default function CartSummaryPage() {
         {step === "summary" && (
           <>
             <div className="mb-6">
+                <Link href="/home" className="home-action-btn home-home-btn">
+  <FaHome className="home-action-icon" /> Home
+</Link>
               <h3 className="font-bold text-lg text-yellow-700 mb-2">Your Details</h3>
               <div className="bg-yellow-50 rounded p-4 mb-2">
                 <div><span className="font-bold">Name:</span> {userInfo.name}</div>

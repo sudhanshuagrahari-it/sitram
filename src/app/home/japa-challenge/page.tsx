@@ -1,6 +1,8 @@
 "use client";
 import "../home-custom.css";
 import React, { useRef, useState } from "react";
+import { FaHome } from "react-icons/fa";
+import Link from "next/link";
 
 const text = "Hare Krishna Hare Krishna Krishna Krishna Hare Hare Hare Ram Hare Ram Ram Ram Hare Hare";
 const words = text.split(" ");
@@ -46,6 +48,9 @@ export default function JapaChallengePage() {
   return (
     <div className="content-overlay">
       <div className="homeCustomBox japa-main-box">
+        <Link href="/home" className="home-action-btn home-home-btn">
+  <FaHome className="home-action-icon" /> Home
+</Link>
         <h2 className="japa-title">Japa Challenge</h2>
         {/* Hidden audio element */}
         <audio

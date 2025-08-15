@@ -80,30 +80,11 @@ export default function DivinePurchasePage() {
 	}
 	const total = cartItems.reduce((sum, item) => sum + item.price * item.qty, 0);
 
-	async function handleCheckout() {
-		// Prepare JSON for API call
-		const payload = {
-			items: cartItems,
-			total,
-			timestamp: new Date().toISOString(),
-		};
-		// Example API call (replace URL with your endpoint)
-		try {
-			const res = await fetch("/api/purchase/checkout", {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify(payload),
-			});
-			if (res.ok) {
-				alert("Order placed successfully!");
-				setCartItems([]);
-			} else {
-				alert("Failed to place order.");
-			}
-		} catch (err) {
-			alert("Error: " + err);
+		function handleCheckout() {
+			// Store cart in localStorage and redirect to cart summary page
+			localStorage.setItem("cart", JSON.stringify(cartItems));
+			window.location.href = "/home/8ps/purchase/cart-summary";
 		}
-	}
 
 	return (
 		<div className="comeCustomBox1">
@@ -133,9 +114,40 @@ export default function DivinePurchasePage() {
 								<div className="purchase-title">{item.title}</div>
 								<div className="purchase-desc">{item.desc}</div>
 								<div className="purchase-price">₹{item.price}</div>
-								<button className="fancy-btn add-to-cart-btn" onClick={() => addToCart(item)}>
-									Add to Cart
-								</button>
+												<div className="cart-qty-row">
+													<button
+														className="qty-btn"
+														type="button"
+																					onClick={() => {
+																						const found = cartItems.find((c) => c.id === item.id);
+																						if (found) {
+																							if (found.qty === 1) removeFromCart(item.id);
+																							else updateQty(item.id, found.qty - 1);
+																						}
+																					}}
+																					disabled={!cartItems.find((c) => c.id === item.id)}
+													>
+														–
+													</button>
+													<span className="cart-qty-value">
+														{cartItems.find((c) => c.id === item.id)?.qty || 0}
+													</span>
+													<button
+														className="qty-btn"
+														type="button"
+														onClick={() => {
+															const found = cartItems.find((c) => c.id === item.id);
+															if (found) updateQty(item.id, found.qty + 1);
+															else addToCart(item);
+														}}
+													>
+														+
+													</button>
+													<button className="fancy-btn add-to-cart-btn" onClick={() => addToCart(item)}>
+														Add to Cart
+													</button>
+												</div>
+// CSS for cart-qty-row and qty-btn should be added to your CSS file for proper styling.
 							</div>
 						</div>
 					))}

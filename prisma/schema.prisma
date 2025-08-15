@@ -1,3 +1,20 @@
+model Order {
+  id        String      @id @default(uuid())
+  user      User        @relation(fields: [userId], references: [id])
+  userId    String
+  total     Int
+  createdAt DateTime    @default(now())
+  items     OrderItem[]
+}
+
+model OrderItem {
+  id        String   @id @default(uuid())
+  order     Order    @relation(fields: [orderId], references: [id])
+  orderId   String
+  title     String
+  price     Int
+  qty       Int
+}
 
 model User {
   id        String   @id @default(uuid())
@@ -10,6 +27,7 @@ model User {
   attempts  QuizAttempt[]
   progresses Progress[]
   rewards   Reward[]
+  orders    Order[]
 }
 
 model Quiz {
@@ -50,14 +68,6 @@ model Reward {
   userId    String
   type      String   // e.g. "book", "aarti", "donation"
   points    Int
-  createdAt DateTime @default(now())
-}
-model UserInfo {
-  id        String   @id @default(uuid())
-  name      String
-  mobile    String   @unique
-  gender    String
-  address   String
   createdAt DateTime @default(now())
 }
 // Prisma schema for selfie contest submissions

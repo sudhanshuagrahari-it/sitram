@@ -16,51 +16,130 @@ const bgImages = [
   "/bg4.png",
 ];
 
+import { FaGlobe } from "react-icons/fa";
+import { IoClose } from "react-icons/io5";
+
+
 function GoogleTranslate() {
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement>(null);
+  const [expanded, setExpanded] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [widgetLoaded, setWidgetLoaded] = useState(false);
+
   useEffect(() => {
-    // @ts-ignore
-    if (window.google && window.google.translate) return;
-    const script = document.createElement('script');
-    script.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
-    script.async = true;
-    // @ts-ignore
+    // Load Google Translate widget on mount, but keep hidden until expanded
+    if (window.google && window.google.translate) {
+      setWidgetLoaded(true);
+      setLoading(false);
+      return;
+    }
+    setLoading(true);
     window.googleTranslateElementInit = function () {
-      // @ts-ignore
       new window.google.translate.TranslateElement({
         pageLanguage: 'en',
         includedLanguages: 'en,hi,te',
         layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
         autoDisplay: false
       }, 'google_translate_element');
+      setLoading(false);
+      setWidgetLoaded(true);
     };
+    const script = document.createElement('script');
+    script.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+    script.async = true;
     document.body.appendChild(script);
+    // Fallback: if widget doesn't load in 3s, stop loading
+    const timeout = setTimeout(() => setLoading(false), 3000);
+    return () => clearTimeout(timeout);
   }, []);
+
+  // Hide widget when clicking outside
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setExpanded(false);
+      }
+    }
+    if (expanded) document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [expanded]);
+
   return (
     <div
-      id="google_translate_element"
-      ref={ref}
       style={{
         position: 'fixed',
         bottom: 24,
         right: 24,
         zIndex: 1000,
-        background: 'linear-gradient(90deg, #ffe082 10%, #fffde4 90%)',
-        borderRadius: '2rem',
-        padding: '8px 18px',
-        boxShadow: '0 4px 18px rgba(0,0,0,0.18)',
-        minWidth: 120,
-        minHeight: 36,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        fontWeight: 600,
-        fontSize: 16,
-        color: '#222',
-        border: '2px solid #ffe082',
+        background: expanded ? 'linear-gradient(90deg, #ffe082 10%, #fffde4 90%)' : 'transparent',
+        borderRadius: expanded ? '2rem' : '50%',
+        boxShadow: expanded ? '0 4px 18px rgba(0,0,0,0.18)' : 'none',
+        minWidth: expanded ? 220 : 48,
+        minHeight: 48,
+        width: expanded ? 260 : 48,
+        height: 48,
+        transition: 'all 0.25s cubic-bezier(.4,2,.6,1)',
+        border: expanded ? '2px solid #ffe082' : '2px solid transparent',
+        opacity: expanded ? 1 : 0.5,
         cursor: 'pointer',
       }}
-    />
+      ref={ref}
+      onClick={() => !expanded && setExpanded(true)}
+      onMouseEnter={() => !expanded && (ref.current!.style.opacity = '0.85')}
+      onMouseLeave={() => !expanded && (ref.current!.style.opacity = '0.5')}
+    >
+      {!expanded && (
+        <FaGlobe size={24} color="#bfa100" style={{ margin: 'auto' }} />
+      )}
+      {/* Always render the widget container, but hide it unless expanded */}
+      <div
+        id="google_translate_element"
+        style={{
+          display: expanded ? 'flex' : 'none',
+          alignItems: 'center',
+          minWidth: 140,
+          minHeight: 36,
+          fontWeight: 600,
+          fontSize: 16,
+          color: '#222',
+          marginLeft: 12,
+          marginRight: 8,
+          flex: 1,
+        }}
+      />
+      {expanded && (
+        <>
+          {loading && (
+            <span style={{ color: '#bfa100', fontSize: 14, marginLeft: 8 }}>Loading…</span>
+          )}
+          <button
+            type="button"
+            aria-label="Close translate"
+            style={{
+              background: 'none',
+              border: 'none',
+              marginLeft: 4,
+              color: '#bfa100',
+              fontSize: 22,
+              cursor: 'pointer',
+              borderRadius: '50%',
+              width: 32,
+              height: 32,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              transition: 'background 0.18s',
+            }}
+            onClick={e => { e.stopPropagation(); setExpanded(false); }}
+          >
+            <IoClose />
+          </button>
+        </>
+      )}
+    </div>
   );
 }
 

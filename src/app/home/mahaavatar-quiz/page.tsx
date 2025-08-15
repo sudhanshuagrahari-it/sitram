@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from "react";
 import PsMenuBar from "../8ps/PsMenuBar";
 import "../home-custom.css";
+import { FaHome } from "react-icons/fa";
+import Link from "next/link";
 
 const QUIZ_TYPE = "mahaavatar";
 const QUIZ_TITLE = "Mahaavatar Quiz";
@@ -142,6 +144,9 @@ export default function MahaavatarQuizPage() {
   return (
     <div className="content-overlay">
       <div className="comeCustomBox1 quiz-main-box">
+        <Link href="/home" className="home-action-btn home-home-btn">
+  <FaHome className="home-action-icon" /> Home
+</Link>
         <h2 className="quiz-title">Mahaavatar Quiz</h2>
         <p className="quiz-desc">Drag the correct answer image below each question. Some questions are images, some are text. Good luck!</p>
         <div className="quiz-time">Time: 4 minutes</div>

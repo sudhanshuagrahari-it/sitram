@@ -2,7 +2,7 @@
 import "../home-custom.css";
 import React, { useState, useEffect } from "react";
 import { ProgressBarFloating } from "../../../components/ProgressBarFloating";
-import { FaHandsWash, FaPrayingHands, FaRegStar, FaUsers, FaShoppingBag, FaRocket, FaEye, FaHandshake } from "react-icons/fa";
+import { FaHandsWash,FaHome, FaPrayingHands, FaRegStar, FaUsers, FaShoppingBag, FaRocket, FaEye, FaHandshake } from "react-icons/fa";
 import Link from "next/link";
 
 export default function EightPsPage() {
@@ -93,6 +93,9 @@ export default function EightPsPage() {
         psList={psList}
       />
   <div className="eightps-main-box">
+    <Link href="/home" className="home-action-btn home-home-btn">
+  <FaHome className="home-action-icon" /> Home
+</Link>
   <h2 className="eightps-title">8Ps Divine Journey</h2>
   <div className="ps-menu-bar">
           {ps.map((p, idx) => {

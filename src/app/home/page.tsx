@@ -59,16 +59,18 @@ export default function HomePage() {
           <a href="https://donate.iskcon.com" target="_blank" rel="noopener noreferrer" className="home-action-btn home-donate-btn"><FaDonate className="home-action-icon" /> Donate</a>
           <Link href="/home/8ps/purchase/items" className="home-action-btn home-basket-btn"><FaShoppingBasket className="home-action-icon" /> Krishna Basket</Link>
         </div>
-        <a
-          href="/gift-summary"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="home-gift-summary-btn"
-          title="Show Gift Summary"
-        >
-          <FaListAlt className="home-gift-summary-icon" />
-          <span className="home-gift-summary-label">Gifts</span>
-        </a>
+        <div className="home-gift-summary-left">
+          <a
+            href="/gift-summary"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="home-gift-summary-btn"
+            title="Show Gift Summary"
+          >
+            <FaListAlt className="home-gift-summary-icon" />
+            <span className="home-gift-summary-label">Gifts</span>
+          </a>
+        </div>
       </div>
     </div>
   );
