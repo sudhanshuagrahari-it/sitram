@@ -52,30 +52,29 @@ export default function MahaavatarQuizPage() {
   const [loadingUser, setLoadingUser] = useState(false);
 
   useEffect(() => {
-      if (typeof window !== "undefined") {
-        const storedId = localStorage.getItem("userId");
-        if (storedId) {
-          setUserId(storedId);
-          setLoadingUser(true);
-          const storedUserInfo = localStorage.getItem("userInfo");
-          if (storedUserInfo) {
-            try {
-              const parsed = JSON.parse(storedUserInfo);
+    // Try to load userId from localStorage and fetch user info
+    if (typeof window !== "undefined") {
+      const storedId = localStorage.getItem("userId");
+      if (storedId) {
+        setUserId(storedId);
+        setLoadingUser(true);
+        fetch(`/api/user/get?id=${storedId}`)
+          .then(res => res.json())
+          .then(data => {
+            if (data.success && data.user) {
               setUserInfo({
-                name: parsed.name || "",
-                mobile: parsed.mobile || "",
-                gender: parsed.gender || "",
-                address: parsed.address || "",
-                maritalStatus: parsed.maritalStatus || "",
+                name: data.user.name,
+                mobile: data.user.mobile,
+                gender: data.user.gender,
+                address: data.user.address,
+                maritalStatus: data.user.maritalStatus,
               });
-            } catch {
-              // fallback to empty
             }
-          }
-          setLoadingUser(false);
-        }
+          })
+          .finally(() => setLoadingUser(false));
       }
-    }, []);
+    }
+  }, []);
 
   const handleDrop = (qIdx: number, label: string) => {
     const newAnswers = [...userAnswers];

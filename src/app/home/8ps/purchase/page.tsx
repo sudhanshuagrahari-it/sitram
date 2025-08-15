@@ -85,30 +85,28 @@ function PurchasePage() {
       const [loadingUser, setLoadingUser] = useState(false);
 
       useEffect(() => {
-            if (typeof window !== "undefined") {
-              const storedId = localStorage.getItem("userId");
-              if (storedId) {
-                setUserId(storedId);
-                setLoadingUser(true);
-                const storedUserInfo = localStorage.getItem("userInfo");
-                if (storedUserInfo) {
-                  try {
-                    const parsed = JSON.parse(storedUserInfo);
-                    setUserInfo({
-                      name: parsed.name || "",
-                      mobile: parsed.mobile || "",
-                      gender: parsed.gender || "",
-                      address: parsed.address || "",
-                      maritalStatus: parsed.maritalStatus || "",
-                    });
-                  } catch {
-                    // fallback to empty
-                  }
+        if (typeof window !== "undefined") {
+          const storedId = localStorage.getItem("userId");
+          if (storedId) {
+            setUserId(storedId);
+            setLoadingUser(true);
+            fetch(`/api/user/get?id=${storedId}`)
+              .then(res => res.json())
+              .then(data => {
+                if (data.success && data.user) {
+                  setUserInfo({
+                    name: data.user.name,
+                    mobile: data.user.mobile,
+                    gender: data.user.gender,
+                    address: data.user.address,
+                    maritalStatus: data.user.maritalStatus,
+                  });
                 }
-                setLoadingUser(false);
-              }
-            }
-          }, []);
+              })
+              .finally(() => setLoadingUser(false));
+          }
+        }
+      }, []);
 
       function handleProceed() {
     setStep("quiz");
