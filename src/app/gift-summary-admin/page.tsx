@@ -114,25 +114,33 @@ export default function GiftSummaryAdminPage() {
                             </li>
                           ))}
                         </ul>
-                        <button
-                          className="mt-2 px-3 py-1 rounded bg-green-600 text-white font-bold hover:bg-green-500 transition text-sm"
-                          onClick={async () => {
-                            try {
-                              const res = await fetch('/api/order-delivery', {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ orderId })
-                              });
-                              if (res.ok) {
-                                alert('Order marked as delivered!');
-                              } else {
-                                alert('Failed to update order status.');
-                              }
-                            } catch {
-                              alert('Error updating order status.');
-                            }
-                          }}
-                        >Mark Delivered</button>
+                        {(() => {
+                          const [delivered, setDelivered] = React.useState(false);
+                          if (delivered) {
+                            return <span className="text-green-400 font-bold mt-2 block">Order marked as delivered!</span>;
+                          }
+                          return (
+                            <button
+                              className="mt-2 px-3 py-1 rounded bg-green-600 text-white font-bold hover:bg-green-500 transition text-sm"
+                              onClick={async () => {
+                                try {
+                                  const res = await fetch('/api/order-delivery', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ orderId })
+                                  });
+                                  if (res.ok) {
+                                    setDelivered(true);
+                                  } else {
+                                    alert('Failed to update order status.');
+                                  }
+                                } catch {
+                                  alert('Error updating order status.');
+                                }
+                              }}
+                            >Mark Delivered</button>
+                          );
+                        })()}
                       </li>
                     ))}
                   </ul>

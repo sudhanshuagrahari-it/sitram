@@ -7,7 +7,7 @@ export async function POST(req: NextRequest) {
   try {
     const data = await req.json();
     const { name, mobile, gender, address, maritalStatus, language } = data;
-    if (!name || !mobile || !gender || !address || !language) {
+  if (!name || !mobile || !gender || !address || !language || typeof isOffline === 'undefined') {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
@@ -36,6 +36,7 @@ export async function POST(req: NextRequest) {
         address,
         maritalStatus,
         language,
+    isOffline,
       },
     });
 

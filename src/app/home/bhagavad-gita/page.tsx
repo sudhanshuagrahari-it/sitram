@@ -3,6 +3,7 @@ import "../home-custom.css";
 import { useState, useEffect } from "react";
 import { useRouter} from "next/navigation";
 import { isValidPhoneNumber } from "libphonenumber-js";
+import { FaWhatsapp } from "react-icons/fa";
 
 export default function BhagavadGitaPage() {
   const router = useRouter();
@@ -13,7 +14,8 @@ export default function BhagavadGitaPage() {
     gender: "",
     address: "",
     maritalStatus: "",
-    language: ""
+    language: "",
+    isOffline: false
   });
   const [showForm, setShowForm] = useState(true);
   const [submitting, setSubmitting] = useState(false);
@@ -35,7 +37,9 @@ export default function BhagavadGitaPage() {
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const target = e.target as HTMLInputElement | HTMLSelectElement;
+    const { name, value, type } = target;
+    setForm({ ...form, [name]: type === 'checkbox' ? (target as HTMLInputElement).checked : value });
   };
 
   function isValidIndianMobile(mobile: string) {
@@ -81,7 +85,8 @@ export default function BhagavadGitaPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...userInfo,
-          language: form.language
+          language: form.language,
+          isOffline: form.isOffline
         })
       });
       if (!res.ok) throw new Error("Failed to register");
@@ -130,6 +135,17 @@ export default function BhagavadGitaPage() {
               <option value="Hindi">Hindi</option>
               <option value="Telugu">Telugu</option>
             </select>
+            <div className="option optionFancy optionFull flex items-center gap-2 mt-2" style={{ background: '#fffbe6', color: '#bfa100', fontWeight: 500 }}>
+              <input
+                type="checkbox"
+                id="isOffline"
+                name="isOffline"
+                checked={form.isOffline}
+                onChange={handleChange}
+                className="mr-2"
+              />
+              <label htmlFor="isOffline" className="cursor-pointer select-none">I prefer to attend classes <span style={{fontWeight:700}}>offline (in-person at ISKCON)</span></label>
+            </div>
             <button type="submit" className="option optionFancy optionFull" disabled={submitting} style={{ marginTop: 12 }}>
               {submitting ? "Registering..." : "Register"}
             </button>
@@ -144,6 +160,21 @@ export default function BhagavadGitaPage() {
         {success && (
           <div style={{ color: '#43a047', fontWeight: 600, margin: '1.5rem 0', textAlign: 'center' }}>
             Thanks for registering!<br />We will reach out to you shortly.
+            {(form.language === 'English' && form.maritalStatus === 'Married') && (
+              <div>
+                <p>Join ISKCON Hyderabad Bhagavad Gita WhatsApp Group</p>
+        <p>Click the button below to join our WhatsApp group and stay connected!</p>
+        <a
+          href="https://chat.whatsapp.com/BEbwv6r4kJZ7H8Z1AX7yk5?mode=ac_t"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="option optionFancy optionFull flex items-center justify-center gap-2"
+        >
+          <FaWhatsapp className="text-green-400 text-xl" />
+          Join WhatsApp Group
+        </a>
+              </div>
+            )}
           </div>
         )}
       </div>

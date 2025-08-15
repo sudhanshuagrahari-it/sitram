@@ -22,7 +22,7 @@ export default function GiftSummaryPage() {
         setUserMobile(u.mobile || "");
         setUserName(u.name || "");
       }
-      const japa = localStorage.getItem("japaCount");
+      const japa = localStorage.getItem("chantCount");
       setJapaCount(japa ? parseInt(japa) : 0);
     }
   }, []);

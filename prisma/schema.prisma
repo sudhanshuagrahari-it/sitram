@@ -13,6 +13,7 @@ model BhagavadGitaRegistration {
   address   String
   maritalStatus String?
   language  String
+  isOffline Boolean @default(false)
   createdAt DateTime @default(now())
   @@unique([mobile, language])
 }

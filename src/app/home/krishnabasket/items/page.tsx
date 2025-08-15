@@ -41,7 +41,7 @@ const books = [
         title: "Prahlad Kit",
         desc: "Contains Prahlad book, japa mala, japa bag, certificate and frame",
         price: 50,
-        img: "/images/TTM.jpg", // Prahlad Book cover
+        img: "/images/TTM.png", // Prahlad Book cover
     },
 ];
 
