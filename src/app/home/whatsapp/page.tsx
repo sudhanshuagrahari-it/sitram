@@ -3,11 +3,15 @@
 import "../home-custom.css";
 import React from "react";
 import { FaWhatsapp } from "react-icons/fa";
+import { useRouter} from "next/navigation";
 
 export default function WhatsappPage() {
+  const router = useRouter();
+
   return (
     <div className="content-overlay">
       <div className="homeCustomBox flex flex-col items-center mx-auto">
+        <button className="back-btn" onClick={() => router.push("/home")}>← Back to Home</button>
         <h2>Join ISKCON Hyderabad WhatsApp Group</h2>
         <p>Click the button below to join our WhatsApp group and stay connected!</p>
         <a

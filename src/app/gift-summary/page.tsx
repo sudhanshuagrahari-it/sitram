@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { FaGift, FaShoppingBasket, FaBookOpen, FaChalkboardTeacher, FaCamera, FaPrayingHands } from "react-icons/fa";
+import Image from "next/image";
 
 export default function GiftSummaryPage() {
   const [cartItems, setCartItems] = useState<any[]>([]);
@@ -41,57 +42,83 @@ export default function GiftSummaryPage() {
   }, [userMobile]);
 
   return (
-    <div className="content-overlay min-h-screen flex flex-col items-center justify-center">
-      <div className="homeCustomBox max-w-2xl w-full mx-auto p-8 rounded-2xl shadow-2xl bg-white/90">
-        <h2 className="fancyTitle mb-6 flex items-center gap-2 text-yellow-700"><FaGift className="text-yellow-500" /> Gift Summary</h2>
+    <div className="content-overlay fancy-bg flex flex-col items-center justify-center min-h-screen" style={{ backdropFilter: "blur(5px)", background: "rgba(30, 30, 30, .68)", border: "1px solid rgba(255, 255, 255, .1)", borderRadius: "1.25rem", marginBottom: "2rem" }}>
+      <div className="homeCustomBox purchase-main-box-dark max-w-3xl w-full mx-auto p-8 rounded-2xl shadow-2xl  border border-yellow-700">
+        <div className="flex flex-col items-center mb-6">
+          <Image src="/iskcon-logo.png" alt="ISKCON Logo" width={220} height={60} className="mb-2" />
+          <h1 className="fancyTitle text-yellow-300 text-2xl text-center mb-2">Welcome to ISKCON Sri Sri Radha Madanmohan</h1>
+        </div>
+        <h2 className="fancyTitle mb-8 flex items-center gap-2 text-yellow-400"><FaGift className="text-yellow-400" /> Gift Summary</h2>
         {loading ? (
-          <div className="text-center text-yellow-700 font-bold text-lg">Loading your summary…</div>
+          <div className="text-center text-yellow-400 font-bold text-lg">Loading your summary…</div>
         ) : (
-          <>
-            <div className="mb-6">
-              <h3 className="font-bold text-lg text-yellow-700 mb-2 flex items-center gap-2"><FaShoppingBasket /> Krishna Basket Items</h3>
+          <div className="gift-summary-grid">
+            <div className="gift-summary-card text-yellow-100 border border-yellow-700" style={{background: "linear-gradient(135deg, #2d2d2d 60%, #ffe082 100%)", border: "2px solid #ffe082", borderRadius: "1.5rem", padding: "1rem", marginBottom: "2rem"}}>
+              <h3 className="gift-summary-title flex items-center gap-2 text-yellow-300"><FaShoppingBasket /> Krishna Basket Items</h3>
               {cartItems.length === 0 ? (
-                <div className="text-gray-500">No items added to cart.</div>
+                <div className="gift-summary-empty text-yellow-500">No items added to cart.</div>
               ) : (
-                <ul className="list-disc pl-6 text-gray-700 space-y-1">
+                <ul className="gift-summary-list">
                   {cartItems.map((item, idx) => (
-                    <li key={idx}>{item.title} x {item.qty} ({item.price} each)</li>
+                    <li key={idx} className="gift-summary-list-item flex gap-3 items-center">
+                      <span className="gift-summary-item-title font-bold text-yellow-200">{item.title}</span>
+                      <span className="gift-summary-item-qty text-yellow-400">x{item.qty}</span>
+                      <span className="gift-summary-item-price text-yellow-300">₹{item.price * item.qty}</span>
+                    </li>
                   ))}
                 </ul>
               )}
             </div>
-            <div className="mb-6">
-              <h3 className="font-bold text-lg text-yellow-700 mb-2 flex items-center gap-2"><FaBookOpen /> Bhagavad Gita Registration</h3>
+            <div className="gift-summary-card text-yellow-100 border border-yellow-700" style={{background: "linear-gradient(135deg, #2d2d2d 60%, #ffe082 100%)", border: "2px solid #ffe082", borderRadius: "1.5rem", padding: "1rem", marginBottom: "2rem"}}>
+              <h3 className="gift-summary-title flex items-center gap-2 text-yellow-300"><FaBookOpen /> Bhagavad Gita Registration</h3>
               {gitaRegs.length === 0 ? (
-                <span className="text-red-700 font-semibold">Not Registered</span>
+                <span className="gift-summary-empty text-red-400">Not Registered</span>
               ) : (
-                <span className="text-green-700 font-semibold">Registered ({gitaRegs.map(r => r.language).join(", ")})</span>
+                <span className="gift-summary-success text-green-400">Registered ({gitaRegs.map(r => r.language).join(", ")})</span>
               )}
             </div>
-            <div className="mb-6">
-              <h3 className="font-bold text-lg text-yellow-700 mb-2 flex items-center gap-2"><FaPrayingHands /> Japa Challenge</h3>
-              <span className="text-gray-700">Total Japa Count: <span className="font-bold">{japaCount}</span></span>
+            <div className="gift-summary-card text-yellow-100 border border-yellow-700" style={{background: "linear-gradient(135deg, #2d2d2d 60%, #ffe082 100%)", border: "2px solid #ffe082", borderRadius: "1.5rem", padding: "1rem", marginBottom: "2rem"}}>
+              <h3 className="gift-summary-title flex items-center gap-2 text-yellow-300"><FaPrayingHands /> Japa Challenge</h3>
+              <span className="gift-summary-info">Total Japa Count: <span className="font-bold text-yellow-200">{japaCount}</span></span>
             </div>
-            <div className="mb-6">
-              <h3 className="font-bold text-lg text-yellow-700 mb-2 flex items-center gap-2"><FaChalkboardTeacher /> Quiz Progress & Scores</h3>
+            <div className="gift-summary-card text-yellow-100 border border-yellow-700" style={{background: "linear-gradient(135deg, #2d2d2d 60%, #ffe082 100%)", border: "2px solid #ffe082", borderRadius: "1.5rem", padding: "1rem", marginBottom: "2rem"}}>
+              <h3 className="gift-summary-title flex items-center gap-2 text-yellow-300"><FaChalkboardTeacher /> Quiz Progress & Scores</h3>
               {progresses.length === 0 ? (
-                <div className="text-gray-500">No quiz progress found.</div>
+                <div className="gift-summary-empty text-yellow-500">No quiz progress found.</div>
               ) : (
-                <ul className="list-disc pl-6 text-gray-700 space-y-1">
+                <ul className="gift-summary-list">
                   {progresses.map((p, idx) => {
                     const attempt = attempts.find(a => a.quizId === p.pName);
                     return (
-                      <li key={idx}>
-                        {p.pName}: {p.completed ? "Completed" : "In Progress"} | Score: <span className="font-bold">{attempt ? attempt.score : "-"}</span>
+                      <li key={idx} className="gift-summary-list-item flex gap-3 items-center">
+                        <span className="gift-summary-item-title font-bold text-yellow-200">{p.pName}</span>
+                        <span className="gift-summary-item-status text-yellow-400">{p.completed ? "Completed" : "In Progress"}</span>
+                        <span className="gift-summary-item-score text-yellow-300">Score: <span className="font-bold">{attempt ? attempt.score : "-"}</span></span>
                       </li>
                     );
                   })}
                 </ul>
               )}
             </div>
-            <div className="text-center text-yellow-700 font-bold text-lg">Participate in all activities to unlock more divine gifts!</div>
-          </>
+          </div>
         )}
+        <div className="gift-summary-info text-center text-yellow-400 font-bold text-lg mt-8">Participate in all activities to unlock more divine gifts!</div>
+
+        {/* WhatsApp Join Section */}
+        <div className="whatsapp-join-box mt-12 flex flex-col items-center justify-center">
+          <h2 className="fancyTitle text-green-400 mb-2">Join ISKCON Hyderabad WhatsApp Group</h2>
+          <p className="text-yellow-200 mb-4">Click the button below to join our WhatsApp group and stay connected!</p>
+          <a
+            href="https://chat.whatsapp.com/KXoXsdQyzaDA4rLRFPb0cn?mode=ac_t"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="option optionFancy optionFull flex items-center justify-center gap-2 bg-green-700 hover:bg-green-600 text-white font-bold rounded-full px-6 py-3 shadow-lg transition"
+            style={{ fontSize: '1.15rem' }}
+          >
+            <FaGift className="text-green-300 text-xl" />
+            Join WhatsApp Group
+          </a>
+        </div>
       </div>
     </div>
   );

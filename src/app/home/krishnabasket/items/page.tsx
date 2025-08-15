@@ -5,6 +5,7 @@ import "../../../../globals.css";
 import "../purchase-items.css";
 import { FaHome } from "react-icons/fa";
 import Link from "next/link";
+import { useRouter} from "next/navigation";
 
 const books = [
     {
@@ -55,6 +56,7 @@ const articles = [
 ];
 
 export default function DivinePurchasePage() {
+    const router = useRouter();
     const [tab, setTab] = useState<"books" | "articles">("books");
     // Single cartItems state for all cart logic
     const [cartItems, setCartItems] = useState<{
@@ -91,9 +93,7 @@ export default function DivinePurchasePage() {
     return (
         <div className="comeCustomBox1">
             <div className="purchase-main-box-dark">
-                <Link href="/home" className="home-action-btn home-home-btn">
-                  <FaHome className="home-action-icon" /> Home
-                </Link>
+                <button className="back-btn" onClick={() => router.push("/home")}>← Back to Home</button>
                 <h2 className="fancyTitle">Divine Purchase</h2>
                 <div className="flex justify-center gap-6">
                     <button

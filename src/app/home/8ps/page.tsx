@@ -4,8 +4,10 @@ import React, { useState, useEffect } from "react";
 import { ProgressBarFloating } from "../../../components/ProgressBarFloating";
 import { FaHandsWash,FaHome, FaPrayingHands, FaRegStar, FaUsers, FaShoppingBag, FaRocket, FaEye, FaHandshake } from "react-icons/fa";
 import Link from "next/link";
+import { useRouter} from "next/navigation";
 
 export default function EightPsPage() {
+  const router = useRouter();
   const ps = [
     {
       name: "Prepare",
@@ -93,9 +95,7 @@ export default function EightPsPage() {
         psList={psList}
       />
   <div className="eightps-main-box">
-    <Link href="/home" className="home-action-btn home-home-btn">
-  <FaHome className="home-action-icon" /> Home
-</Link>
+    <button className="back-btn" onClick={() => router.push("/home")}>← Back to Home</button>
   <h2 className="eightps-title">8Ps Divine Journey</h2>
   <div className="ps-menu-bar">
           {ps.map((p, idx) => {

@@ -4,6 +4,7 @@ import PsMenuBar from "../8ps/PsMenuBar";
 import "../home-custom.css";
 import { FaHome } from "react-icons/fa";
 import Link from "next/link";
+import { useRouter} from "next/navigation";
 
 const QUIZ_TYPE = "mahaavatar";
 const QUIZ_TITLE = "Mahaavatar Quiz";
@@ -38,6 +39,7 @@ const answerImages = [
 ];
 
 export default function MahaavatarQuizPage() {
+  const router = useRouter();
   const [userAnswers, setUserAnswers] = useState(Array(10).fill(""));
   const [submitted, setSubmitted] = useState(false);
   const [score, setScore] = useState(0);
@@ -99,7 +101,10 @@ export default function MahaavatarQuizPage() {
     const data = await res.json();
     if (data.success && data.userId) {
       setUserId(data.userId);
-      if (typeof window !== "undefined") localStorage.setItem("userId", data.userId);
+      if (typeof window !== "undefined") {
+        localStorage.setItem("userInfo", JSON.stringify(userInfo));
+        localStorage.setItem("userId", data.userId);
+      }
       setShowUserInfo(false);
     } else {
       setError("Could not save user info. Try again.");
@@ -144,9 +149,7 @@ export default function MahaavatarQuizPage() {
   return (
     <div className="content-overlay">
       <div className="comeCustomBox1 quiz-main-box">
-        <Link href="/home" className="home-action-btn home-home-btn">
-  <FaHome className="home-action-icon" /> Home
-</Link>
+        <button className="back-btn" onClick={() => router.push("/home")}>← Back to Home</button>
         <h2 className="quiz-title">Mahaavatar Quiz</h2>
         <p className="quiz-desc">Drag the correct answer image below each question. Some questions are images, some are text. Good luck!</p>
         <div className="quiz-time">Time: 4 minutes</div>

@@ -3,6 +3,7 @@ import "../home-custom.css";
 import React, { useRef, useState } from "react";
 import { FaHome } from "react-icons/fa";
 import Link from "next/link";
+import { useRouter} from "next/navigation";
 
 const text = "Hare Krishna Hare Krishna Krishna Krishna Hare Hare Hare Ram Hare Ram Ram Ram Hare Hare";
 const words = text.split(" ");
@@ -10,6 +11,7 @@ const words = text.split(" ");
 const timings = [0, 1.2, 1.7, 2.07, 2.7, 3.2, 3.6, 4.2, 4.7, 5.2, 5.5, 6.0, 6.4, 6.9, 7.3, 7.6];
 
 export default function JapaChallengePage() {
+  const router = useRouter();
   const audioRef = useRef<HTMLAudioElement>(null);
   const [currentWord, setCurrentWord] = useState(0);
   const [playCount, setPlayCount] = useState(0);
@@ -49,9 +51,7 @@ export default function JapaChallengePage() {
   return (
     <div className="content-overlay">
       <div className="homeCustomBox japa-main-box">
-        <Link href="/home" className="home-action-btn home-home-btn">
-  <FaHome className="home-action-icon" /> Home
-</Link>
+        <button className="back-btn" onClick={() => router.push("/home")}>← Back to Home</button>
         <h2 className="japa-title">Japa Challenge</h2>
         {/* Hidden audio element */}
         <audio

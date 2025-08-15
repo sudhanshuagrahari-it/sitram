@@ -127,7 +127,10 @@ function PerfectQuiz() {
     const data = await res.json();
     if (data.success && data.userId) {
       setUserId(data.userId);
-      if (typeof window !== "undefined") localStorage.setItem("userId", data.userId);
+      if (typeof window !== "undefined") {
+        localStorage.setItem("userInfo", JSON.stringify(userInfo));
+        localStorage.setItem("userId", data.userId);
+      }
       setSubmitted(true);
       setStep("result");
     } else {
