@@ -37,6 +37,7 @@ export default function JapaChallengePage() {
     audio.currentTime = 0; // restart from beginning
     audio.play();
     setPlayCount((prev) => prev + 1);
+    localStorage.setItem("chantCount", playCount.toString());
     setIsPlaying(true);
   };
 

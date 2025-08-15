@@ -152,7 +152,6 @@ export default function DivinePurchasePage() {
                                                         Add to Cart
                                                     </button>
                                                 </div>
-// CSS for cart-qty-row and qty-btn should be added to your CSS file for proper styling.
                             </div>
                         </div>
                     ))}

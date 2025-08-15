@@ -23,25 +23,25 @@ const shlokaData = [
   },
   {
     id: 3,
-    title: "BG 9.34: Description of Lord Krsna",
+    title: "SB 1.8.22: Description of Lord Krsna",
 
-    audio: "/audio/BG 9.34.mp3",
+    audio: "/audio/Namah pankaja nabhaya.mp3",
     shloka: `namaḥ paṅkaja-nābhāya\nnamaḥ paṅkaja-māline\nnamaḥ paṅkaja-netrāya\nnamas te paṅkajāṅghraye`,
     synonyms: `namaḥ — all respectful obeisances; paṅkaja-nābhāya — unto the Lord who has a specific depression resembling a lotus flower in the center of His abdomen; namaḥ — obeisances; paṅkaja-māline — one who is always decorated with a garland of lotus flowers; namaḥ — obeisances; paṅkaja-netrāya — one whose glance is as cooling as a lotus flower; namaḥ te — respectful obeisances unto You; paṅkaja-aṅghraye — unto You, the soles of whose feet are engraved with lotus flowers (and who are therefore said to possess lotus feet).`,
     translation: `My respectful obeisances are unto You, O Lord, whose abdomen is marked with a depression like a lotus flower, who are always decorated with garlands of lotus flowers, whose glance is as cool as the lotus and whose feet are engraved with lotuses.`
   },
   {
     id: 4,
-    title: "Dedication to Lord Krsna",
+    title: "BG 9.34: Dedication to Lord Krsna",
     
-    audio: "/audio/Namah pankaja nabhaya.mp3",
+    audio: "/audio/BG 9.34.mp3",
     shloka: `man-manā bhava mad-bhakto\nmad-yājī māṁ namaskuru\nmām evaiṣyasi yuktvaivam\nātmānaṁ mat-parāyaṇaḥ`,
     synonyms: `mat-manāḥ — always thinking of Me; bhava — become; mat — My; bhaktaḥ — devotee; mat — My; yājī — worshiper; mām — unto Me; namas-kuru — offer obeisances; mām — unto Me; eva — completely; eṣyasi — you will come; yuktvā — being absorbed; evam — thus; ātmānam — your soul; mat-parāyaṇaḥ — devoted to Me.`,
     translation: `Engage your mind always in thinking of Me, become My devotee, offer obeisances to Me and worship Me. Being completely absorbed in Me, surely you will come to Me.`
   },
   {
     id: 5,
-    title: "Deepen connection with lord Krsna",
+    title: "SB 12.13.23: Deepen connection with lord Krsna",
     
     audio: "/audio/Namasankirtanam Yasya.mp3",
     shloka: `nāma-saṅkīrtanaṁ yasya\nsarva-pāpa praṇāśanam\npraṇāmo duḥkha-śamanas\ntaṁ namāmi hariṁ param`,
