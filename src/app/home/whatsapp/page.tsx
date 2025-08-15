@@ -11,7 +11,7 @@ export default function WhatsappPage() {
         <h2>Join ISKCON Hyderabad WhatsApp Group</h2>
         <p>Click the button below to join our WhatsApp group and stay connected!</p>
         <a
-          href="https://chat.whatsapp.com/replace-with-real-link"
+          href="https://chat.whatsapp.com/KXoXsdQyzaDA4rLRFPb0cn?mode=ac_t"
           target="_blank"
           rel="noopener noreferrer"
           className="option optionFancy optionFull flex items-center justify-center gap-2"

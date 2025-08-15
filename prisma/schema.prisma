@@ -1,3 +1,14 @@
+model BhagavadGitaRegistration {
+  id        String   @id @default(uuid())
+  name      String
+  mobile    String
+  gender    String
+  address   String
+  maritalStatus String?
+  language  String
+  createdAt DateTime @default(now())
+  @@unique([mobile, language])
+}
 model Order {
   id        String      @id @default(uuid())
   user      User        @relation(fields: [userId], references: [id])
@@ -71,7 +82,7 @@ model Reward {
   createdAt DateTime @default(now())
 }
 // Prisma schema for selfie contest submissions
-// Run `npx prisma migrate dev` after editing this file
+// Run `npx prisma generate && npx prisma migrate dev` after editing this file
 
 generator client {
   provider = "prisma-client-js"
