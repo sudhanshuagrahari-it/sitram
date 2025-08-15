@@ -6,7 +6,7 @@ import { useRouter, useParams } from "next/navigation";
 const shlokaData = [
   {
     id: 1,
-    title: "Divinity of Lord Krsna",
+    title: "BG 4.9: Divinity of Lord Krsna",
     audio: "/audio/BG 4.9.mp3",
     shloka: `janma karma ca me divyam\nevaṁ yo vetti tattvataḥ\ntyaktvā dehaṁ punar janma\nnaiti mām eti so ’rjuna`,
     synonyms: `janma — birth; karma — work; ca — also; me — of Mine; divyam — transcendental; evam — like this; yaḥ — anyone who; vetti — knows; tattvataḥ — in reality; tyaktvā — leaving aside; deham — this body; punaḥ — again; janma — birth; na — never; eti — does attain; mām — unto Me; eti — does attain; saḥ — he; arjuna — O Arjuna.`,
@@ -14,7 +14,7 @@ const shlokaData = [
   },
   {
     id: 2,
-    title: "Devotion to Lord Krsna",
+    title: "BG 9.26: Devotion to Lord Krsna",
     
     audio: "/audio/BG 9.26.mp3",
     shloka: `patraṁ puṣpaṁ phalaṁ toyaṁ\nyo me bhaktyā prayacchati\ntad ahaṁ bhakty-upahṛtam\naśnāmi prayatātmanaḥ`,
@@ -23,8 +23,8 @@ const shlokaData = [
   },
   {
     id: 3,
-    title: "Description of Lord Krsna",
-    
+    title: "BG 9.34: Description of Lord Krsna",
+
     audio: "/audio/BG 9.34.mp3",
     shloka: `namaḥ paṅkaja-nābhāya\nnamaḥ paṅkaja-māline\nnamaḥ paṅkaja-netrāya\nnamas te paṅkajāṅghraye`,
     synonyms: `namaḥ — all respectful obeisances; paṅkaja-nābhāya — unto the Lord who has a specific depression resembling a lotus flower in the center of His abdomen; namaḥ — obeisances; paṅkaja-māline — one who is always decorated with a garland of lotus flowers; namaḥ — obeisances; paṅkaja-netrāya — one whose glance is as cooling as a lotus flower; namaḥ te — respectful obeisances unto You; paṅkaja-aṅghraye — unto You, the soles of whose feet are engraved with lotus flowers (and who are therefore said to possess lotus feet).`,

@@ -166,7 +166,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             priority
           />
           {/* Dark overlay for better content visibility */}
-          <div className="absolute inset-0 bg-black/60 backdrop-blur-[8px]" />
+          {/* <div className="absolute inset-0 bg-black/60 backdrop-blur-[8px]" /> */}
         </div>
         {/* <div className="flex flex-col items-center w-full z-20 mt-8 mb-4">
           <Image src="/iskcon-logo.png" alt="ISKCON Logo" width={400} height={100} className="mb-2 rounded-full text-center shadow-lg border-4 border-white/30" />

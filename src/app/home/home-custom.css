@@ -734,7 +734,7 @@
   font-size: 1.3rem;
 }
 .home-gift-summary-btn {
-  position: fixed;
+  /* position: fixed; */
   bottom: 2rem;
   right: 2rem;
   background: #ffe082;
@@ -762,14 +762,14 @@
   font-weight: bold;
 }
 @media (max-width: 700px) {
-  .home-grid {
+  /* .home-grid {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
   .home-actions {
     flex-direction: column;
     gap: 1rem;
-  }
+  } */
   .home-gift-summary-btn {
     right: 1rem;
     bottom: 1rem;
