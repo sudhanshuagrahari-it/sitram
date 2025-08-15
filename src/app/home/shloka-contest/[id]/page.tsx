@@ -58,7 +58,7 @@ export default function ShlokaDetailPage() {
   const idx = shlokaData.findIndex(s => s.id === id);
   const shloka = shlokaData[idx];
   const [showTest, setShowTest] = useState(false);
-  const [userInfo, setUserInfo] = useState({ name: "", mobile: "", gender: "", address: "", maritalStatus: "" });
+  const [userInfo, setUserInfo] = useState({ id: "",name: "", mobile: "", gender: "", address: "", maritalStatus: "" });
   const [userId, setUserId] = useState<string | null>(null);
   const [answer, setAnswer] = useState("");
   const [error, setError] = useState("");
@@ -109,6 +109,7 @@ export default function ShlokaDetailPage() {
           try {
             const parsed = JSON.parse(storedUserInfo);
             setUserInfo({
+              id: userId,
               name: parsed.name || "",
               mobile: parsed.mobile || "",
               gender: parsed.gender || "",
@@ -119,6 +120,9 @@ export default function ShlokaDetailPage() {
             // fallback to empty
           }
         }
+      }
+      if(userId) {
+        userInfo.id = userId;
       }
     setError("");
     // Save via quiz API

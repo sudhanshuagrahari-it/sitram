@@ -46,7 +46,7 @@ export default function MahaavatarQuizPage() {
   const [score, setScore] = useState(0);
   const [tab, setTab] = useState(0); // 0: first 5, 1: next 5
   const [userId, setUserId] = useState<string | null>(null);
-  const [userInfo, setUserInfo] = useState({ name: "", mobile: "", gender: "", address: "", maritalStatus: "" });
+  const [userInfo, setUserInfo] = useState({ id: "",name: "", mobile: "", gender: "", address: "", maritalStatus: "" });
   const [showUserInfo, setShowUserInfo] = useState(false);
   const [error, setError] = useState("");
   const [loadingUser, setLoadingUser] = useState(false);
@@ -63,6 +63,7 @@ export default function MahaavatarQuizPage() {
           .then(data => {
             if (data.success && data.user) {
               setUserInfo({
+                id: storedId,
                 name: data.user.name,
                 mobile: data.user.mobile,
                 gender: data.user.gender,
@@ -141,6 +142,7 @@ export default function MahaavatarQuizPage() {
     });
     setScore(s);
     setSubmitted(true);
+    userInfo.id = userId;
     // Save quiz attempt (no progress or P info for Mahaavatar)
     await fetch("/api/quiz/submit", {
       method: "POST",

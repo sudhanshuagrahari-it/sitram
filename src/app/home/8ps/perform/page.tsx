@@ -104,7 +104,7 @@ function PerformQuiz() {
 
   const [step, setStep] = useState<"start" | "quiz" | "userinfo" | "result">("start");
   const [userId, setUserId] = useState<string | null>(null);
-  const [userInfo, setUserInfo] = useState({ name: "", mobile: "", gender: "", address: "", maritalStatus: "" });
+  const [userInfo, setUserInfo] = useState({ id: "",name: "", mobile: "", gender: "", address: "", maritalStatus: "" });
   // Remove old matches state
   const [reflection, setReflection] = useState("");
   const [score, setScore] = useState(0);
@@ -124,6 +124,7 @@ function PerformQuiz() {
           .then(data => {
             if (data.success && data.user) {
               setUserInfo({
+                id: storedId,
                 name: data.user.name,
                 mobile: data.user.mobile,
                 gender: data.user.gender,
@@ -234,6 +235,7 @@ function PerformQuiz() {
     const percent = 12.5;
     // Submit to API
     if (userId) {
+      userInfo.id = userId;
     await fetch("/api/quiz/submit", {
       method: "POST",
       headers: { "Content-Type": "application/json" },

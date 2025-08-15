@@ -83,7 +83,7 @@ function PledgeQuiz() {
 
   const [step, setStep] = useState<"start" | "quiz" | "userinfo" | "result">("start");
   const [userId, setUserId] = useState<string | null>(null);
-  const [userInfo, setUserInfo] = useState({ name: "", mobile: "", gender: "", address: "", maritalStatus: "" });
+  const [userInfo, setUserInfo] = useState({ id: "",name: "", mobile: "", gender: "", address: "", maritalStatus: "" });
   const [pledge, setPledge] = useState("");
   const [score, setScore] = useState(0);
   const [submitted, setSubmitted] = useState(false);
@@ -101,6 +101,7 @@ function PledgeQuiz() {
           .then(data => {
             if (data.success && data.user) {
               setUserInfo({
+                id: storedId,
                 name: data.user.name,
                 mobile: data.user.mobile,
                 gender: data.user.gender,
@@ -182,6 +183,7 @@ function PledgeQuiz() {
     const percent = 12.5;
     // Submit to API
     if (userId) {
+      userInfo.id = userId;
     await fetch("/api/quiz/submit", {
       method: "POST",
       headers: { "Content-Type": "application/json" },

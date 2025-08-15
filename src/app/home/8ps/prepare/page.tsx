@@ -84,7 +84,7 @@ function FancyQuiz() {
 
   const [step, setStep] = useState<"start" | "quiz" | "userinfo" | "result">("start");
   const [userId, setUserId] = useState<string | null>(null);
-  const [userInfo, setUserInfo] = useState({ name: "", mobile: "", gender: "", address: "", maritalStatus: "" });
+  const [userInfo, setUserInfo] = useState({ id: "",name: "", mobile: "", gender: "", address: "", maritalStatus: "" });
   const [answers, setAnswers] = useState(Array(quizQuestions.length).fill(""));
   const [score, setScore] = useState(0);
   const [submitted, setSubmitted] = useState(false);
@@ -102,6 +102,7 @@ function FancyQuiz() {
           try {
             const parsed = JSON.parse(storedUserInfo);
             setUserInfo({
+              id: storedId,
               name: parsed.name || "",
               mobile: parsed.mobile || "",
               gender: parsed.gender || "",
@@ -190,6 +191,7 @@ function FancyQuiz() {
     const percent = 12.5;
     // Submit to API
     if (userId) {
+      userInfo.id = userId;
     await fetch("/api/quiz/submit", {
       method: "POST",
       headers: { "Content-Type": "application/json" },

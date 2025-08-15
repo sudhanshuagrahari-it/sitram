@@ -84,7 +84,7 @@ function ParticipateQuiz() {
 
   const [step, setStep] = useState<"start" | "quiz" | "userinfo" | "result">("start");
   const [userId, setUserId] = useState<string | null>(null);
-  const [userInfo, setUserInfo] = useState({ name: "", mobile: "", gender: "", address: "", maritalStatus: "" });
+  const [userInfo, setUserInfo] = useState({ name: "", mobile: "", gender: "", address: "", maritalStatus: "", id: "" });
   const [blank, setBlank] = useState("");
   const [score, setScore] = useState(0);
   const [submitted, setSubmitted] = useState(false);
@@ -103,6 +103,7 @@ function ParticipateQuiz() {
           .then(data => {
             if (data.success && data.user) {
               setUserInfo({
+                id: storedId,
                 name: data.user.name,
                 mobile: data.user.mobile,
                 gender: data.user.gender,
@@ -159,6 +160,9 @@ function ParticipateQuiz() {
     const percent = 12.5;
     // If userId exists, submit quiz and go to result. If not, go to userinfo form.
     if (userId) {
+      // No need to set userId in userInfo as it's not part of the userInfo state
+      userInfo.id = userId;
+
       await fetch("/api/quiz/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
