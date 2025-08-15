@@ -103,13 +103,30 @@ export default function ShlokaDetailPage() {
       setError("Please enter a valid mobile number.");
       return;
     }
+     if (userId) {
+      const storedUserInfo = localStorage.getItem("userInfo");
+        if (storedUserInfo) {
+          try {
+            const parsed = JSON.parse(storedUserInfo);
+            setUserInfo({
+              name: parsed.name || "",
+              mobile: parsed.mobile || "",
+              gender: parsed.gender || "",
+              address: parsed.address || "",
+              maritalStatus: parsed.maritalStatus || "",
+            });
+          } catch {
+            // fallback to empty
+          }
+        }
+      }
     setError("");
     // Save via quiz API
     const res = await fetch("/api/quiz/submit", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        ...(userId ? { userId } : userInfo),
+        ...userInfo,
         answers: [answer],
         score: 1,
         quizType: `shloka${id}`,
@@ -119,6 +136,13 @@ export default function ShlokaDetailPage() {
     });
     if (res.ok) {
       setSubmitted(true);
+      if (typeof window !== "undefined") {
+        localStorage.setItem("userInfo", JSON.stringify(userInfo));
+        const data = await res.json();
+        if (data.userId) {
+          localStorage.setItem("userId", data.userId);
+        }
+      }
       setTimeout(() => {
         // Go to next shloka or back to grid
         if (idx < shlokaData.length - 1) {
