@@ -14,7 +14,13 @@ export default function JapaChallengePage() {
   const router = useRouter();
   const audioRef = useRef<HTMLAudioElement>(null);
   const [currentWord, setCurrentWord] = useState(0);
-  const [playCount, setPlayCount] = useState(0);
+  const [playCount, setPlayCount] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('chantCount');
+      return stored ? parseInt(stored) : 0;
+    }
+    return 0;
+  });
   const [isPlaying, setIsPlaying] = useState(false);
 
   // Sync highlight with audio
@@ -32,14 +38,17 @@ export default function JapaChallengePage() {
     setCurrentWord(Math.max(0, wordIdx));
   };
 
-   const handlePlayClick = () => {
+  const handlePlayClick = () => {
     const audio = audioRef.current;
     if (!audio) return;
 
     audio.currentTime = 0; // restart from beginning
     audio.play();
-    setPlayCount((prev) => prev + 1);
-    localStorage.setItem("chantCount", playCount.toString());
+    setPlayCount(prev => {
+      const next = prev + 1;
+      localStorage.setItem('chantCount', next.toString());
+      return next;
+    });
     setIsPlaying(true);
   };
 

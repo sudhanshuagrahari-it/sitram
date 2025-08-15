@@ -2,6 +2,7 @@
 import "../../home-custom.css";
 import React, { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
+import { isValidPhoneNumber } from "libphonenumber-js";
 
 const shlokaData = [
   {
@@ -83,6 +84,19 @@ export default function ShlokaDetailPage() {
     setUserInfo({ ...userInfo, [e.target.name]: e.target.value });
   };
 
+  function isValidIndianMobile(mobile: string) {
+      // Remove spaces, dashes, etc.
+      const cleaned = mobile.replace(/\D/g, "");
+      // Static check: 10 digits, starts with 6-9
+      if (!/^([6-9][0-9]{9})$/.test(cleaned)) return false;
+      // Library check (libphonenumber-js)
+      try {
+        return isValidPhoneNumber(cleaned, 'IN');
+      } catch {
+        return false;
+      }
+    }
+
   const handleTestSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!answer.trim()) {
@@ -91,6 +105,11 @@ export default function ShlokaDetailPage() {
     }
     if (!userId && (!userInfo.name || !userInfo.mobile || !userInfo.gender || !userInfo.address || !userInfo.maritalStatus)) {
       setError("Please fill all user details.");
+      return;
+    }
+
+    if (!isValidIndianMobile(userInfo.mobile)) {
+      setError("Please enter a valid mobile number.");
       return;
     }
     setError("");
@@ -155,7 +174,11 @@ export default function ShlokaDetailPage() {
             {!userId && (
               <>
                 <input className="input-fancy" name="name" type="text" placeholder="Your Name" value={userInfo.name} onChange={handleUserInfoChange} />
-                <input className="input-fancy" name="mobile" type="tel" placeholder="Mobile Number" value={userInfo.mobile} onChange={handleUserInfoChange} />
+                <input className="input-fancy" name="mobile" type="tel" placeholder="Mobile Number" value={userInfo.mobile} onChange={handleUserInfoChange} 
+                maxLength={10}
+              pattern="[6-9]{1}[0-9]{9}"
+              inputMode="numeric"
+                />
                 <select className="input-fancy" name="gender" value={userInfo.gender} onChange={handleUserInfoChange}>
                   <option value="">Select Gender</option>
                   <option value="Male">Male</option>

@@ -20,6 +20,7 @@ export default function ShlokaContestPage() {
       <div className="homeCustomBox shloka-contest-box">
         <button className="back-btn" onClick={() => router.push("/home")}>← Back to Home</button>
         <h2 className="fancyTitle">Shloka Contest</h2>
+        <p className="shloka-menu-desc">Click a shloka to view, learn, and get gifts!</p>
         <div className="ps-menu-bar shloka-menu-bar">
           {shlokaCards.map(card => (
             <Link
@@ -36,7 +37,7 @@ export default function ShlokaContestPage() {
             </Link>
           ))}
         </div>
-        <p className="shloka-menu-desc">Click a shloka to view, learn, and get gifts!</p>
+        
       </div>
     </div>
   );

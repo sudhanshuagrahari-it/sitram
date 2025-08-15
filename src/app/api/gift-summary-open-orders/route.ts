@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
     const mobile = searchParams.get('mobile');
     if (!mobile) return NextResponse.json({ error: 'Missing mobile' }, { status: 400 });
 
-    // Cart items (OrderItems for this user)
+    // Cart items (OrderItems for this user, only for orders not delivered)
     const user = await prisma.user.findUnique({ where: { mobile } });
     let cartItems: OrderItem[] = [];
     if (user) {
@@ -18,9 +18,7 @@ export async function GET(req: NextRequest) {
       // Get delivered orderIds
       const deliveredStatuses = await prisma.orderDeliveryStatus.findMany({ where: { delivered: true }, select: { orderId: true } });
       const deliveredOrderIds = new Set(deliveredStatuses.map(s => s.orderId));
-      cartItems = orders
-        .filter(order => !deliveredOrderIds.has(order.id))
-        .flatMap(order => order.items.map(item => ({ ...item, orderId: order.id })));
+      cartItems = orders.filter(order => !deliveredOrderIds.has(order.id)).flatMap(order => order.items.map(item => ({ ...item, orderId: order.id })));
     }
 
     // Bhagavad Gita registration

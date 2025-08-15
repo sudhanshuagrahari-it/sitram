@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import { isValidPhoneNumber } from "libphonenumber-js";
 import "../../home-custom.css";
 import "../../../../globals.css";
 import { FaHome } from "react-icons/fa";
@@ -24,10 +25,27 @@ export default function CartSummaryPage() {
     setUserInfo({ ...userInfo, [e.target.name]: e.target.value });
   }
 
+  function isValidIndianMobile(mobile: string) {
+    // Remove spaces, dashes, etc.
+    const cleaned = mobile.replace(/\D/g, "");
+    // Static check: 10 digits, starts with 6-9
+    if (!/^([6-9][0-9]{9})$/.test(cleaned)) return false;
+    // Library check (libphonenumber-js)
+    try {
+      return isValidPhoneNumber(cleaned, 'IN');
+    } catch {
+      return false;
+    }
+  }
+
   function handleUserInfoSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!userInfo.name || !userInfo.mobile || !userInfo.gender || !userInfo.address) {
       setError("Please fill all details.");
+      return;
+    }
+    if (!isValidIndianMobile(userInfo.mobile)) {
+      setError("Please enter a valid mobile number.");
       return;
     }
     setError("");
@@ -69,7 +87,18 @@ export default function CartSummaryPage() {
         {step === "userinfo" && (
           <form className="flex flex-col gap-4 items-center" onSubmit={handleUserInfoSubmit}>
             <input className="input-fancy bg-zinc-800 text-yellow-100 border-yellow-600 placeholder-yellow-400" name="name" type="text" placeholder="Your Name" value={userInfo.name} onChange={handleUserInfoChange} />
-            <input className="input-fancy bg-zinc-800 text-yellow-100 border-yellow-600 placeholder-yellow-400" name="mobile" type="tel" placeholder="Mobile Number" value={userInfo.mobile} onChange={handleUserInfoChange} />
+            <input
+              className="input-fancy bg-zinc-800 text-yellow-100 border-yellow-600 placeholder-yellow-400"
+              name="mobile"
+              type="tel"
+              placeholder="Mobile Number"
+              value={userInfo.mobile}
+              onChange={handleUserInfoChange}
+              title="Enter a valid mobile number"
+              maxLength={10}
+              pattern="[6-9]{1}[0-9]{9}"
+              inputMode="numeric"
+            />
             <select className="input-fancy bg-zinc-800 text-yellow-100 border-yellow-600" name="gender" value={userInfo.gender} onChange={handleUserInfoChange}>
               <option value="">Select Gender</option>
               <option value="Male">Male</option>

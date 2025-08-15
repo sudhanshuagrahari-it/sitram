@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import PsMenuBar from "../PsMenuBar";
 import { ProgressBarFloating } from "../../../../components/ProgressBarFloating";
 import "../../home-custom.css";
+import { isValidPhoneNumber } from "libphonenumber-js";
+
 function PerceivePage() {
   const [progress, setProgress] = useState<{ [key: string]: number }>({});
   const [userId, setUserId] = useState<string | null>(null);
@@ -43,7 +45,7 @@ function PerceivePage() {
         <div className="homeCustomBox flex flex-col items-center mx-auto">
           <h2 className="fancyTitle">Perceive</h2>
           <p className="text-lg mt-2">Divine gallery: Experience the divine through images and stories.</p>
-          <img src="/images/perceive.png" alt="Perceive" className="mt-6 rounded-xl shadow-lg w-64" />
+          {/* <img src="/images/perceive.png" alt="Perceive" className="mt-6 rounded-xl shadow-lg w-64" /> */}
         <div className="mt-6 text-base max-w-2xl text-center">
             <p>Know the founder-acharya—<b>Srila Prabhupada</b>—and how the Krishna Consciousness movement began.</p>
             <p className="mt-4">View <b>Abhay Charan series, Prabhupada’s darshan gallery</b>, and short lectures.</p>
@@ -115,10 +117,27 @@ function PerceiveQuiz() {
     setUserInfo({ ...userInfo, [e.target.name]: e.target.value });
   }
 
+  function isValidIndianMobile(mobile: string) {
+      // Remove spaces, dashes, etc.
+      const cleaned = mobile.replace(/\D/g, "");
+      // Static check: 10 digits, starts with 6-9
+      if (!/^([6-9][0-9]{9})$/.test(cleaned)) return false;
+      // Library check (libphonenumber-js)
+      try {
+        return isValidPhoneNumber(cleaned, 'IN');
+      } catch {
+        return false;
+      }
+    }
+
   async function handleUserInfoSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!userInfo.name || !userInfo.mobile || !userInfo.gender || !userInfo.address || !userInfo.maritalStatus) {
       setError("Please fill all details.");
+      return;
+    }
+    if (!isValidIndianMobile(userInfo.mobile)) {
+      setError("Please enter a valid mobile number.");
       return;
     }
     setError("");
@@ -180,7 +199,10 @@ function PerceiveQuiz() {
       {step === "userinfo" && (
         <form className="flex flex-col gap-4 items-center" onSubmit={handleUserInfoSubmit}>
           <input className="input-fancy" name="name" type="text" placeholder="Your Name" value={userInfo.name} onChange={handleUserInfoChange} />
-          <input className="input-fancy" name="mobile" type="tel" placeholder="Mobile Number" value={userInfo.mobile} onChange={handleUserInfoChange} />
+          <input className="input-fancy" name="mobile" type="tel" placeholder="Mobile Number" value={userInfo.mobile} onChange={handleUserInfoChange} 
+          maxLength={10}
+              pattern="[6-9]{1}[0-9]{9}"
+              inputMode="numeric"/>
           <select className="input-fancy" name="gender" value={userInfo.gender} onChange={handleUserInfoChange}>
             <option value="">Select Gender</option>
             <option value="Male">Male</option>

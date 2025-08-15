@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import "../../../home-custom.css";
 import "../../../../../globals.css";
+import { isValidPhoneNumber } from "libphonenumber-js";
 
 export default function CartSummaryPage() {
   const [cart, setCart] = useState<{ id: number; title: string; price: number; qty: number }[]>([]);

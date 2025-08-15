@@ -5,6 +5,7 @@ import "../home-custom.css";
 import { FaHome } from "react-icons/fa";
 import Link from "next/link";
 import { useRouter} from "next/navigation";
+import { isValidPhoneNumber } from "libphonenumber-js";
 
 const QUIZ_TYPE = "mahaavatar";
 const QUIZ_TITLE = "Mahaavatar Quiz";
@@ -85,10 +86,27 @@ export default function MahaavatarQuizPage() {
     setUserInfo({ ...userInfo, [e.target.name]: e.target.value });
   };
 
+  function isValidIndianMobile(mobile: string) {
+      // Remove spaces, dashes, etc.
+      const cleaned = mobile.replace(/\D/g, "");
+      // Static check: 10 digits, starts with 6-9
+      if (!/^([6-9][0-9]{9})$/.test(cleaned)) return false;
+      // Library check (libphonenumber-js)
+      try {
+        return isValidPhoneNumber(cleaned, 'IN');
+      } catch {
+        return false;
+      }
+    }
+
   const handleUserInfoSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!userInfo.name || !userInfo.mobile || !userInfo.gender || !userInfo.address || !userInfo.maritalStatus) {
       setError("Please fill all details.");
+      return;
+    }
+    if (!isValidIndianMobile(userInfo.mobile)) {
+      setError("Please enter a valid mobile number.");
       return;
     }
     setError("");
@@ -157,7 +175,11 @@ export default function MahaavatarQuizPage() {
           <form className="quiz-user-form" onSubmit={handleUserInfoSubmit}>
             <div className="quiz-user-form-title">Please enter your details</div>
             <input className="quiz-user-input" name="name" placeholder="Name" value={userInfo.name} onChange={handleUserInfoChange} />
-            <input className="quiz-user-input" name="mobile" placeholder="Mobile Number" value={userInfo.mobile} onChange={handleUserInfoChange} />
+            <input className="quiz-user-input" name="mobile" placeholder="Mobile Number" value={userInfo.mobile} onChange={handleUserInfoChange} 
+            maxLength={10}
+              pattern="[6-9]{1}[0-9]{9}"
+              inputMode="numeric"
+            />
             <select className="quiz-user-input" name="gender" value={userInfo.gender} onChange={handleUserInfoChange}>
               <option value="">Select Gender</option>
               <option value="Male">Male</option>

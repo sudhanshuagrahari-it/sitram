@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { ProgressBarFloating } from "../../../../components/ProgressBarFloating";
 import PsMenuBar from "../PsMenuBar";
 import "../../home-custom.css";
+import { isValidPhoneNumber } from "libphonenumber-js";
 
 function PerformPage() {
   // Progress state for all Ps
@@ -45,7 +46,7 @@ function PerformPage() {
       <div className="content-overlay">
         <div className="homeCustomBox flex flex-col items-center mx-auto">
           <h2 className="fancyTitle">Perform: Intent & Content</h2>
-          <img src="/images/perform.png" alt="Perform" className="mt-6 rounded-xl shadow-lg w-64" />
+          {/* <img src="/images/perform.png" alt="Perform" className="mt-6 rounded-xl shadow-lg w-64" /> */}
 
           <div className="mt-6 text-base max-w-2xl text-center">
             <p>Worship is an act of gratitude—offering back to the Lord what we have received from Him: <b>Tera Tujhko Arpana, Kya Lage Mera</b>.</p>
@@ -144,10 +145,27 @@ function PerformQuiz() {
     setUserInfo({ ...userInfo, [e.target.name]: e.target.value });
   }
 
+  function isValidIndianMobile(mobile: string) {
+      // Remove spaces, dashes, etc.
+      const cleaned = mobile.replace(/\D/g, "");
+      // Static check: 10 digits, starts with 6-9
+      if (!/^([6-9][0-9]{9})$/.test(cleaned)) return false;
+      // Library check (libphonenumber-js)
+      try {
+        return isValidPhoneNumber(cleaned, 'IN');
+      } catch {
+        return false;
+      }
+    }
+
   async function handleUserInfoSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!userInfo.name || !userInfo.mobile || !userInfo.gender || !userInfo.address || !userInfo.maritalStatus) {
       setError("Please fill all details.");
+      return;
+    }
+    if (!isValidIndianMobile(userInfo.mobile)) {
+      setError("Please enter a valid mobile number.");
       return;
     }
     setError("");
@@ -238,7 +256,11 @@ function PerformQuiz() {
       {step === "userinfo" && (
         <form className="flex flex-col gap-4 items-center" onSubmit={handleUserInfoSubmit}>
           <input className="input-fancy" name="name" type="text" placeholder="Your Name" value={userInfo.name} onChange={handleUserInfoChange} />
-          <input className="input-fancy" name="mobile" type="tel" placeholder="Mobile Number" value={userInfo.mobile} onChange={handleUserInfoChange} />
+          <input className="input-fancy" name="mobile" type="tel" placeholder="Mobile Number" value={userInfo.mobile} onChange={handleUserInfoChange} 
+           maxLength={10}
+           pattern="[6-9]{1}[0-9]{9}"
+           inputMode="numeric"
+          />
           <select className="input-fancy" name="gender" value={userInfo.gender} onChange={handleUserInfoChange}>
             <option value="">Select Gender</option>
             <option value="Male">Male</option>

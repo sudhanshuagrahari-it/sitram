@@ -2,6 +2,7 @@
 import "../home-custom.css";
 import { useState, useEffect } from "react";
 import { useRouter} from "next/navigation";
+import { isValidPhoneNumber } from "libphonenumber-js";
 
 export default function BhagavadGitaPage() {
   const router = useRouter();
@@ -36,6 +37,21 @@ export default function BhagavadGitaPage() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
+
+  function isValidIndianMobile(mobile: string) {
+      // Remove spaces, dashes, etc.
+      const cleaned = mobile.replace(/\D/g, "");
+      // Static check: 10 digits, starts with 6-9
+      if (!/^([6-9][0-9]{9})$/.test(cleaned)) return false;
+      // Library check (libphonenumber-js)
+      try {
+        return isValidPhoneNumber(cleaned, 'IN');
+      } catch {
+        return false;
+      }
+
+      // import { isValidPhoneNumber } from "libphonenumber-js";
+    }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -89,7 +105,11 @@ export default function BhagavadGitaPage() {
             {!user && (
               <>
                 <input name="name" value={form.name} onChange={handleChange} placeholder="Name" className="option optionFancy optionFull" required />
-                <input name="mobile" value={form.mobile} onChange={handleChange} placeholder="Mobile" className="option optionFancy optionFull" required pattern="[0-9]{10}" />
+                <input name="mobile" value={form.mobile} onChange={handleChange} placeholder="Mobile" className="option optionFancy optionFull" required 
+                maxLength={10}
+              pattern="[6-9]{1}[0-9]{9}"
+              inputMode="numeric"
+                />
                 <select name="gender" value={form.gender} onChange={handleChange} className="option optionFancy optionFull" required>
                   <option value="">Gender</option>
                   <option value="Male">Male</option>

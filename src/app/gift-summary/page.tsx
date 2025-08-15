@@ -48,13 +48,38 @@ export default function GiftSummaryPage() {
           <Image src="/iskcon-logo.png" alt="ISKCON Logo" width={220} height={60} className="mb-2" />
           <h1 className="fancyTitle text-yellow-300 text-2xl text-center mb-2">Welcome to ISKCON Sri Sri Radha Madanmohan</h1>
         </div>
+
+        {/* Gift Info Text */}
+        <div className="text-center text-yellow-200 font-semibold mb-6 text-lg">
+          These are your divine gifts from ISKCON: Ladoo Prasadam, Contest Certificate, and a Hare Krishna Mantra Sticker! Collect them at your nearest ISKCON center and celebrate your spiritual journey.
+        </div>
+        <div className="flex flex-row items-center justify-center gap-8 mb-8">
+          <div className="flex flex-col items-center">
+            <img src="https://i.ytimg.com/vi/VfSdTW0dpOQ/maxresdefault.jpg" alt="Ladoo Gift" className="w-20 h-20 rounded-full shadow-lg border-4 border-yellow-300 bg-yellow-100 object-contain transition-transform hover:scale-110 hover:rotate-6" />
+            <span className="mt-2 text-yellow-400 font-bold text-sm">Ladoo Prasadam</span>
+          </div>
+          <div className="flex flex-col items-center">
+            <img src="https://www.values.iskconpune.com/wp-content/uploads/2020/08/Certificate-300x213.jpg" alt="Certificate Gift" className="w-20 h-20 rounded-xl shadow-lg border-4 border-blue-300 bg-blue-50 object-contain transition-transform hover:scale-110 hover:-rotate-6" />
+            <span className="mt-2 text-blue-400 font-bold text-sm">Contest Certificate</span>
+          </div>
+          <div className="flex flex-col items-center">
+            <img src="https://i.pinimg.com/736x/c9/33/d9/c933d9819a9055eabbd5d2ef585697f8.jpg" alt="Hare Krishna Mantra Sticker" className="w-20 h-20 rounded-full shadow-lg border-4 border-green-300 bg-green-50 object-contain transition-transform hover:scale-110 hover:rotate-3" />
+            <span className="mt-2 text-green-400 font-bold text-sm">Mantra Sticker</span>
+          </div>
+        </div>
+
         <h2 className="fancyTitle mb-8 flex items-center gap-2 text-yellow-400"><FaGift className="text-yellow-400" /> Gift Summary</h2>
-        {loading ? (
-          <div className="text-center text-yellow-400 font-bold text-lg">Loading your summary…</div>
+
+        
+        {userMobile == "" ? (
+          <div className="text-center text-yellow-400 font-bold text-lg">Please attempt any contest or challenge to get gifts!</div>
         ) : (
-          <div className="gift-summary-grid">
-            <div className="gift-summary-card text-yellow-100 border border-yellow-700" style={{background: "linear-gradient(135deg, #2d2d2d 60%, #ffe082 100%)", border: "2px solid #ffe082", borderRadius: "1.5rem", padding: "1rem", marginBottom: "2rem"}}>
-              <h3 className="gift-summary-title flex items-center gap-2 text-yellow-300"><FaShoppingBasket /> Krishna Basket Items</h3>
+          loading ? (
+            <div className="text-center text-yellow-400 font-bold text-lg">Loading your summary…</div>
+          ) : (
+            <div className="gift-summary-grid">
+              <div className="gift-summary-card text-yellow-100 border border-yellow-700" style={{background: "linear-gradient(135deg, #2d2d2d 60%, #ffe082 100%)", border: "2px solid #ffe082", borderRadius: "1.5rem", padding: "1rem", marginBottom: "2rem"}}>
+                <h3 className="gift-summary-title flex items-center gap-2 text-yellow-300"><FaShoppingBasket /> Krishna Basket Items</h3>
               {cartItems.length === 0 ? (
                 <div className="gift-summary-empty text-yellow-500">No items added to cart.</div>
               ) : (
@@ -101,7 +126,7 @@ export default function GiftSummaryPage() {
               )}
             </div>
           </div>
-        )}
+        ))}
         <div className="gift-summary-info text-center text-yellow-400 font-bold text-lg mt-8">Participate in all activities to unlock more divine gifts!</div>
 
         {/* WhatsApp Join Section */}

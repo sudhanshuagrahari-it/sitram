@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import PsMenuBar from "../PsMenuBar";
 import { ProgressBarFloating } from "../../../../components/ProgressBarFloating";
 import "../../home-custom.css";
+import { isValidPhoneNumber } from "libphonenumber-js";
 
 export default function PerfectPage() {
   const [progress, setProgress] = React.useState<{ [key: string]: number }>({});
@@ -39,7 +40,7 @@ export default function PerfectPage() {
         <div className="homeCustomBox flex flex-col items-center mx-auto">
           <h2 className="fancyTitle">Perfect</h2>
           <p className="text-lg mt-2">Spiritual programs: Attend and perfect your spiritual journey through programs.</p>
-          <img src="/images/perfect.png" alt="Perfect" className="mt-6 rounded-xl shadow-lg w-64" />
+          {/* <img src="/images/perfect.png" alt="Perfect" className="mt-6 rounded-xl shadow-lg w-64" /> */}
           <div className="mt-6 text-base max-w-2xl text-center">
             <p>Perfect your life by taking the next step after Janmashtami—join <b>IYS programs, VLC courses, Bhakti Vriksha, Online Bhagavad Gita classes</b>, or other ISKCON programs.
 This is about <b>sustaining the connection</b> we felt during the festival and turning it into a lifestyle.
@@ -111,10 +112,26 @@ function PerfectQuiz() {
     setUserInfo({ ...userInfo, [e.target.name]: e.target.value });
   }
 
+  function isValidIndianMobile(mobile: string) {
+      // Remove spaces, dashes, etc.
+      const cleaned = mobile.replace(/\D/g, "");
+      // Static check: 10 digits, starts with 6-9
+      if (!/^([6-9][0-9]{9})$/.test(cleaned)) return false;
+      // Library check (libphonenumber-js)
+      try {
+        return isValidPhoneNumber(cleaned, 'IN');
+      } catch {
+        return false;
+      }
+    }
   async function handleUserInfoSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!userInfo.name || !userInfo.mobile || !userInfo.gender || !userInfo.address || !userInfo.maritalStatus) {
       setError("Please fill all details.");
+      return;
+    }
+    if (!isValidIndianMobile(userInfo.mobile)) {
+      setError("Please enter a valid mobile number.");
       return;
     }
     setError("");
@@ -180,7 +197,10 @@ function PerfectQuiz() {
       {step === "userinfo" && (
         <form className="flex flex-col gap-4 items-center" onSubmit={handleUserInfoSubmit}>
           <input className="input-fancy" name="name" type="text" placeholder="Your Name" value={userInfo.name} onChange={handleUserInfoChange} />
-          <input className="input-fancy" name="mobile" type="tel" placeholder="Mobile Number" value={userInfo.mobile} onChange={handleUserInfoChange} />
+          <input className="input-fancy" name="mobile" type="tel" placeholder="Mobile Number" value={userInfo.mobile} onChange={handleUserInfoChange} 
+          maxLength={10}
+              pattern="[6-9]{1}[0-9]{9}"
+              inputMode="numeric"/>
           <select className="input-fancy" name="gender" value={userInfo.gender} onChange={handleUserInfoChange}>
             <option value="">Select Gender</option>
             <option value="Male">Male</option>

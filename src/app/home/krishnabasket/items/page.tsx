@@ -10,49 +10,49 @@ import { useRouter} from "next/navigation";
 const books = [
     {
         id: 1,
-        title: "Bhagavad Gita As It Is",
-        desc: "The timeless wisdom of Krishna, translated and explained by Srila Prabhupada.",
-        price: 250,
+        title: "Gita Kit",
+        desc: "Contains bhagavad gita, japa mala, japa bag, certificate, frame, keychain, pen andcookie packet",
+        price: 500,
         img: "/images/BG.jpg", // Bhagavad Gita cover
     },
     {
         id: 2,
-        title: "Science of Self Realization",
-        desc: "A collection of essays and interviews on the science of the soul.",
-        price: 180,
-        img: "https://i0.wp.com/iskconshop.com/wp-content/uploads/2021/05/91jfYQBQXLL._SY466_.jpg?w=288&ssl=1", // Science of Self Realization book
+        title: "Shiksha Kit",
+        desc: "Contains Science of Self Realization, japa mala, japa bag, certificate, frame, keychain andpen",
+        price: 200,
+        img: "/images/SSR.jpg", // Science of Self Realization book
     },
     {
         id: 3,
-        title: "Krishna Book",
-        desc: "Stories of Krishna's pastimes in Vrindavan.",
-        price: 300,
-        img: "https://i0.wp.com/iskconshop.com/wp-content/uploads/2021/05/125-1-1-1.png?resize=1000%2C1000&ssl=1", // Krishna Book cover
+        title: "Krishna Kit",
+        desc: "Contains Krishna book, japa mala, japa bag, certificate, frame, keychain, pen and cookie packet",
+        price: 500,
+        img: "/images/KRSNA.jpg", // Krishna Book cover
+    },
+    {
+        id: 4,
+        title: "Dharma Kit",
+        desc: "Contains Dharma book, japa mala, japa bag, certificate, frame and keychain",
+        price: 100,
+        img: "/images/Dharma.jpg", // Dharma Book cover
+    },
+    {
+        id: 5,
+        title: "Prahlad Kit",
+        desc: "Contains Prahlad book, japa mala, japa bag, certificate and frame",
+        price: 50,
+        img: "/images/TTM.jpg", // Prahlad Book cover
     },
 ];
 
 const articles = [
     {
         id: 101,
-        title: "Tulsi Mala",
-        desc: "Sacred tulsi beads for chanting and meditation.",
-        price: 60,
-        img: "https://i0.wp.com/iskconshop.com/wp-content/uploads/2023/11/394A9355-1.jpg?resize=1000%2C1000&ssl=1", // Tulsi Mala
-    },
-    {
-        id: 102,
-        title: "Incense Pack",
-        desc: "Fragrant incense sticks for your altar.",
-        price: 40,
-        img: "https://i0.wp.com/iskconshop.com/wp-content/uploads/2021/05/25-3-2-1-1-1-1-1.png?resize=1000%2C1000&ssl=1", // Incense sticks
-    },
-    {
-        id: 103,
-        title: "Car Hanging – Jagannath, Yasoda Damodara, Radha Madhav",
-        desc: "Traditional car hanging for your vechicle",
-        price: 120,
-        img: "https://i0.wp.com/iskconshop.com/wp-content/uploads/2021/08/18-e1685904463996.png?resize=1024%2C1024&ssl=1", // Aarti plate
-    },
+        title: "Special Bead Bag",
+        desc: "A beautiful bag to carry your japa beads.",
+        price: 80,
+        img: "https://i0.wp.com/iskconshop.com/wp-content/uploads/2023/11/394A9355-1.jpg?resize=1000%2C1000&ssl=1", // Special Bead Bag
+    }
 ];
 
 export default function DivinePurchasePage() {

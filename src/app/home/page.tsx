@@ -14,7 +14,7 @@ export default function HomePage() {
       <div className="homeCustomBox home-main-box">
         <div className="home-header">
           <Image src="/iskcon-logo.png" alt="ISKCON Logo" width={400} height={100} className="home-logo" />
-          <h1 className="fancyTitle">Welcome to Iskcon Sri Sri Radha Madanmohan</h1>
+          <h1 className="fancyTitle">Welcome to ISKCON Sri Sri Radha Madanmohan</h1>
         </div>
         <div className="home-grid">
           {/* Row 1 */}

@@ -62,6 +62,76 @@ export const ProgressBarFloating: React.FC<ProgressBarFloatingProps> = ({ comple
     };
   }
 
+  // Responsive: show circle on left for mobile, bar for desktop
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 600);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Animation: fade in/out on update
+  const [fade, setFade] = useState(false);
+  useEffect(() => {
+    setFade(true);
+    const t = setTimeout(() => setFade(false), 1200);
+    return () => clearTimeout(t);
+  }, [percent]);
+
+  if (isMobile) {
+    return (
+      <div
+        ref={dragRef}
+        className={`progressbar-floating-circle ${fade ? 'progressbar-fade' : ''}`}
+        style={{
+          left: 12,
+          top: '50%',
+          transform: 'translateY(-50%)',
+          position: 'fixed',
+          zIndex: 1000,
+          cursor: 'move',
+          width: 64,
+          height: 64,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: 'rgba(255,224,130,0.85)',
+          borderRadius: '50%',
+          boxShadow: '0 2px 12px #0002',
+          border: '3px solid #ffe082',
+          transition: 'background 0.5s, opacity 0.7s',
+          opacity: fade ? 0.5 : 1,
+        }}
+        onMouseDown={onDragStart}
+      >
+        <svg width="56" height="56" viewBox="0 0 56 56">
+          <circle cx="28" cy="28" r="24" stroke="#fff" strokeWidth="6" fill="none" opacity="0.25" />
+          <circle
+            cx="28"
+            cy="28"
+            r="24"
+            stroke="#2196f3"
+            strokeWidth="6"
+            fill="none"
+            strokeDasharray={2 * Math.PI * 24}
+            strokeDashoffset={2 * Math.PI * 24 * (1 - percent / 100)}
+            style={{ transition: 'stroke-dashoffset 1s cubic-bezier(.4,2,.6,1)' }}
+          />
+        </svg>
+        <div style={{
+          position: 'absolute',
+          left: 0, top: 0, width: '100%', height: '100%',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontWeight: 700, fontSize: 18, color: '#222',
+          textShadow: '0 1px 4px #fff8',
+          pointerEvents: 'none',
+        }}>{percent}%</div>
+      </div>
+    );
+  }
+
+  // Desktop fallback: keep bar
   return (
     <div
       ref={dragRef}
