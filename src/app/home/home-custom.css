@@ -394,3 +394,104 @@
     font-size: 1rem;
   }
 }
+/* ProgressBarFloating component styles */
+.progressbar-floating {
+  position: fixed;
+  z-index: 50;
+  left: 1.5rem;
+  top: 1.5rem;
+  width: 320px;
+  background: rgba(255,255,255,0.9);
+  border-radius: 1rem;
+  box-shadow: 0 8px 32px 0 rgba(0,0,0,0.18);
+  border: 2px solid #FFD600;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.progressbar-floating-inner {
+  width: 100%;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.progressbar-floating-title {
+  font-weight: bold;
+  color: #bfa100;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  text-shadow: 0 1px 2px #fffbe6;
+}
+.progressbar-bar-outer {
+  position: relative;
+  width: 100%;
+  background: #ffe082;
+  border-radius: 9999px;
+  height: 1.25rem;
+  margin-bottom: 0.5rem;
+  box-shadow: inset 0 2px 8px #fffde4;
+}
+.progressbar-bar-inner {
+  background: #ffd600;
+  height: 1.25rem;
+  border-radius: 9999px;
+  transition: width 0.3s;
+  box-shadow: 0 2px 8px #ffe082;
+}
+.progressbar-bar-label {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #bfa100;
+  text-shadow: 0 1px 2px #fffbe6;
+}
+.progressbar-floating-google {
+  background: linear-gradient(90deg, #ffe082 10%, #fffde4 90%);
+  border-radius: 2rem;
+  border: 2px solid #ffe082;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.18);
+  min-width: 220px;
+  min-height: 56px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+.progressbar-floating-google-inner {
+  width: 100%;
+  padding: 12px 18px 12px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.progressbar-bar-outer-google {
+  position: relative;
+  width: 180px;
+  background: #ffe082;
+  border-radius: 9999px;
+  height: 1.25rem;
+  margin-bottom: 0.5rem;
+  box-shadow: inset 0 2px 8px #fffde4;
+}
+.progressbar-bar-inner-google {
+  height: 1.25rem;
+  border-radius: 9999px;
+  transition: width 0.3s, background 0.3s;
+  box-shadow: 0 2px 8px #ffe082;
+}
+.progressbar-bar-label-google {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #bfa100;
+  text-shadow: 0 1px 2px #fffbe6;
+}

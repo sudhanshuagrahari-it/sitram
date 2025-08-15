@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
-// import "../home/home-custom.css";
 
 import "../app/home/home-custom.css";
 
@@ -23,16 +22,61 @@ const psColors: Record<string, string> = {
 
 export const ProgressBarFloating: React.FC<ProgressBarFloatingProps> = ({ completedPs }) => {
   const percent = Math.min(100, completedPs.length * 12.5);
+
+  // Drag logic
+  const [pos, setPos] = useState<{x: number, y: number}>(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("progressBarPos");
+      if (saved) return JSON.parse(saved);
+    }
+    return { x: 24, y: 24 };
+  });
+  const dragRef = useRef<HTMLDivElement>(null);
+  const dragging = useRef(false);
+  const offset = useRef({ x: 0, y: 0 });
+
+  useEffect(() => {
+    function onMouseMove(e: MouseEvent) {
+      if (!dragging.current) return;
+      setPos(prev => {
+        const newPos = { x: e.clientX - offset.current.x, y: e.clientY - offset.current.y };
+        localStorage.setItem("progressBarPos", JSON.stringify(newPos));
+        return newPos;
+      });
+    }
+    function onMouseUp() { dragging.current = false; }
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mouseup", onMouseUp);
+    return () => {
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mouseup", onMouseUp);
+    };
+  }, []);
+
+  function onDragStart(e: React.MouseEvent) {
+    dragging.current = true;
+    const rect = dragRef.current?.getBoundingClientRect();
+    offset.current = {
+      x: e.clientX - (rect?.left ?? 0),
+      y: e.clientY - (rect?.top ?? 0)
+    };
+  }
+
   return (
-    <div className="fixed z-50 left-6 top-6 w-[320px] bg-white/90 rounded-2xl shadow-2xl border-2 border-yellow-300 p-0 flex flex-col items-center">
-      <div className="w-full p-4 flex flex-col items-center">
-        <div className="font-bold text-yellow-700 mb-2 text-base drop-shadow">8Ps Progress</div>
-        <div className="relative w-full bg-yellow-200 rounded-full h-5 mb-2 shadow-inner">
+    <div
+      ref={dragRef}
+      className="progressbar-floating-google"
+      style={{ left: pos.x, top: pos.y, position: "fixed", zIndex: 1000, cursor: "move" }}
+      onMouseDown={onDragStart}
+    >
+      <div className="progressbar-floating-google-inner">
+        <div className="progressbar-floating-title">8Ps Progress</div>
+        <div className="progressbar-bar-outer-google" style={{ background: '#ffe082', position: 'relative' }}>
           <div
-            className="bg-yellow-400 h-5 rounded-full transition-all duration-300 shadow"
-            style={{ width: `${percent}%` }}
+            className="progressbar-bar-inner-google"
+            style={{ width: `${percent}%`, background: '#fff', position: 'absolute', left: 0, top: 0, height: '100%' }}
           ></div>
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-xl font-extrabold text-yellow-700 drop-shadow">
+          <div className="progressbar-bar-label-google">
             {percent}%
           </div>
         </div>

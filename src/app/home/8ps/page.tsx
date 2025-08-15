@@ -111,11 +111,6 @@ export default function EightPsPage() {
                   {p.name}
                 </div>
                 <div className={`text-xs mb-2 ${completed ? 'text-green-100' : 'text-white/80'}`}>{p.desc}</div>
-                <img
-                  src={p.img}
-                  alt={p.name}
-                  className={`rounded-xl w-16 h-16 object-cover border-2 ${completed ? 'border-green-300' : 'border-yellow-100 group-hover:border-yellow-400'} transition`}
-                />
                 {completed ? (
                   <span className="absolute bottom-2 right-2 text-xs text-green-200 font-bold">Completed</span>
                 ) : (
