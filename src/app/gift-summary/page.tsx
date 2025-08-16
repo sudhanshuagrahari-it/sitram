@@ -113,30 +113,21 @@ export default function GiftSummaryPage() {
               {quiz.length === 0 ? (
                 <div className="gift-summary-empty text-yellow-500">No quizzes found.</div>
               ) : (
-                <div>
                 <ul className="gift-summary-list">
-                  {quiz.map((q, idx) => {
-                    const attempt = attempts.find(a => a.quizId === q.id);
-                    return (
-                      <li key={idx} className="gift-summary-list-item flex gap-3 items-center">
-                        <span className="gift-summary-item-title font-bold text-yellow-200">{q.title}</span>
-                        <span className="gift-summary-item-score text-yellow-300">Score: <span className="font-bold">{attempt ? attempt.score : "-"}</span></span>
-                      </li>
-                    );
-                  })}
-                </ul>
-
-                <ul className="gift-summary-list">
-                  {progresses.map((p, idx) => {
-                    return (
-                      <li key={idx} className="gift-summary-list-item flex gap-3 items-center">
-                        <span className="gift-summary-item-title font-bold text-yellow-200">{p.pName}</span>
-                        <span className="gift-summary-item-status text-yellow-400">{p.completed ? "Completed" : "In Progress"}</span>
-                      </li>
-                    );
-                  })}
-                </ul>
-                </div>
+  {quiz.map((q, idx) => {
+    const attempt = attempts.find(a => a.quizId === q.id);
+    const progress = progresses.find(p => p.pName.toLowerCase() === q.type.toLowerCase());
+    return (
+      <li key={idx} className="gift-summary-list-item flex gap-3 items-center">
+        <span className="gift-summary-item-title font-bold text-yellow-200">{q.title}</span>
+        <span className="gift-summary-item-score text-yellow-300">Score: <span className="font-bold">{attempt ? attempt.score : "-"}</span></span>
+        <span className="gift-summary-item-status text-yellow-400">
+          {progress ? (progress.completed ? "Completed" : "In Progress") : "Not Started"}
+        </span>
+      </li>
+    );
+  })}
+</ul>
               )}
             </div>
           </div>
