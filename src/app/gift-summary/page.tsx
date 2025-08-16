@@ -109,26 +109,34 @@ export default function GiftSummaryPage() {
               <span className="gift-summary-info">Total Japa Count: <span className="font-bold text-yellow-200">{japaCount}</span></span>
             </div>
             <div className="gift-summary-card text-yellow-100 border border-yellow-700" style={{background: "linear-gradient(135deg, #2d2d2d 60%, #ffe082 100%)", border: "2px solid #ffe082", borderRadius: "1.5rem", padding: "1rem", marginBottom: "2rem"}}>
-              <h3 className="gift-summary-title flex items-center gap-2 text-yellow-300"><FaChalkboardTeacher /> Quiz Progress & Scores</h3>
-              {progresses.length === 0 ? (
-                <div className="gift-summary-empty text-yellow-500">No quiz progress found.</div>
+              <h3 className="gift-summary-title flex items-center gap-2 text-yellow-300"><FaChalkboardTeacher /> Quiz Scores</h3>
+              {quiz.length === 0 ? (
+                <div className="gift-summary-empty text-yellow-500">No quizzes found.</div>
               ) : (
+                <div>
                 <ul className="gift-summary-list">
-                  {progresses.map((p, idx) => {
-                    let attempt: any;
-                    quiz.map((q: any) => {
-                      attempt = attempts.find((a: any) => a.quizId === q.id);
-                    });
-                    // const attempt = attempts.find(a => a.quizId === p.pName);
+                  {quiz.map((q, idx) => {
+                    const attempt = attempts.find(a => a.quizId === q.id);
                     return (
                       <li key={idx} className="gift-summary-list-item flex gap-3 items-center">
-                        <span className="gift-summary-item-title font-bold text-yellow-200">{p.pName}</span>
-                        <span className="gift-summary-item-status text-yellow-400">{p.completed ? "Completed" : "In Progress"}</span>
+                        <span className="gift-summary-item-title font-bold text-yellow-200">{q.title}</span>
                         <span className="gift-summary-item-score text-yellow-300">Score: <span className="font-bold">{attempt ? attempt.score : "-"}</span></span>
                       </li>
                     );
                   })}
                 </ul>
+
+                <ul className="gift-summary-list">
+                  {progresses.map((p, idx) => {
+                    return (
+                      <li key={idx} className="gift-summary-list-item flex gap-3 items-center">
+                        <span className="gift-summary-item-title font-bold text-yellow-200">{p.pName}</span>
+                        <span className="gift-summary-item-status text-yellow-400">{p.completed ? "Completed" : "In Progress"}</span>
+                      </li>
+                    );
+                  })}
+                </ul>
+                </div>
               )}
             </div>
           </div>
