@@ -161,21 +161,68 @@ export default function GiftSummaryAdminPage() {
             {summary.progresses?.length === 0 ? (
               <div className="text-yellow-500 mb-4">No quiz progress found.</div>
             ) : (
-              <ul className="gift-summary-list">
-  {summary.quiz.map((q: any, idx: number) => {
-    const attempt = summary.attempts.find((a: any) => a.quizId === q.id);
+              <div className="quiz-section-list">
+                  {/* 8P Section */}
+                  <div className="quiz-section mb-4">
+                    <div className="quiz-section-title text-yellow-400 text-lg font-bold mb-2 border-b border-yellow-400">8P Quiz</div>
+                    <ul className="gift-summary-list">
+                      {summary.quiz.filter(q => q.title.startsWith('P')).map((q:any, idx:number) => {
+                        const attempt = summary.attempts.find((a: any) => a.quizId === q.id);
     const progress = summary.progresses.find((p: any) => p.pName.toLowerCase() === q.type.toLowerCase());
-    return (
-      <li key={idx} className="gift-summary-list-item flex gap-3 items-center">
-        <span className="gift-summary-item-title font-bold text-yellow-200">{q.title}</span>
-        <span className="gift-summary-item-score text-yellow-300">Score: <span className="font-bold">{attempt ? attempt.score : "-"}</span></span>
-        <span className="gift-summary-item-status text-yellow-400">
-          {progress ? (progress.completed ? "Completed" : "In Progress") : ""}
-        </span>
-      </li>
-    );
-  })}
-</ul>
+                        return (
+                          <li key={q.id} className="gift-summary-list-item flex gap-3 items-center">
+                            <span className="gift-summary-item-title font-bold text-yellow-200">{q.title}</span>
+                            <span className="gift-summary-item-score text-yellow-300">Score: <span className="font-bold">{attempt ? attempt.score : "-"}</span></span>
+                            <span className="gift-summary-item-status text-yellow-400">
+                              {progress ? (progress.completed ? "Completed" : "In Progress") : ""}
+                            </span>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                  {/* Mahaavtar Section */}
+                  <div className="quiz-section mb-4">
+                    <div className="quiz-section-title text-blue-400 text-lg font-bold mb-2 border-b border-blue-400">Mahaavtar Quiz</div>
+                    <ul className="gift-summary-list">
+                      {summary.quiz.filter((q: any) => q.title.startsWith('M')).map((q:any, idx:number) => {
+                        const attempt = summary.attempts.find((a: any) => a.quizId === q.id);
+    const progress = summary.progresses.find((p: any) => p.pName.toLowerCase() === q.type.toLowerCase());
+                        return (
+                          <li key={q.id} className="gift-summary-list-item flex gap-3 items-center">
+                            <span className="gift-summary-item-title font-bold text-yellow-200">{q.title}</span>
+                            <span className="gift-summary-item-score text-yellow-300">Score: <span className="font-bold">{attempt ? attempt.score : "-"}</span></span>
+                            <span className="gift-summary-item-status text-yellow-400">
+                              {progress ? (progress.completed ? "Completed" : "In Progress") : ""}
+                            </span>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                  {/* Shloak Section */}
+                  <div className="quiz-section mb-4">
+                    <div className="quiz-section-title text-green-400 text-lg font-bold mb-2 border-b border-green-400">Shloak Quiz</div>
+                    <ul className="gift-summary-list">
+                      {summary.quiz.filter((q: any) => !q.title.startsWith('P') && !q.title.startsWith('M')).map((q:any, idx:number) => {
+                        const attempt = summary.attempts.find((a: any) => a.quizId === q.id);
+    const progress = summary.progresses.find((p: any) => p.pName.toLowerCase() === q.type.toLowerCase());
+                        return (
+                          <li key={q.id} className="gift-summary-list-item flex gap-3 items-center">
+                            <span className="gift-summary-item-title font-bold text-yellow-200">{q.title}</span>
+                            <span className="gift-summary-item-score text-yellow-300">Score: <span className="font-bold">{attempt ? attempt.score : "-"}</span></span>
+                            <span className="gift-summary-item-status text-yellow-400">
+                              {progress ? (progress.completed ? "Completed" : "In Progress") : ""}
+                            </span>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                </div>
+
+
+
             )}
 
           </div>
