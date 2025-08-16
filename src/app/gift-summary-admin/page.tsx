@@ -170,7 +170,7 @@ export default function GiftSummaryAdminPage() {
         <span className="gift-summary-item-title font-bold text-yellow-200">{q.title}</span>
         <span className="gift-summary-item-score text-yellow-300">Score: <span className="font-bold">{attempt ? attempt.score : "-"}</span></span>
         <span className="gift-summary-item-status text-yellow-400">
-          {progress ? (progress.completed ? "Completed" : "In Progress") : "Not Started"}
+          {progress ? (progress.completed ? "Completed" : "In Progress") : ""}
         </span>
       </li>
     );

@@ -122,7 +122,7 @@ export default function GiftSummaryPage() {
         <span className="gift-summary-item-title font-bold text-yellow-200">{q.title}</span>
         <span className="gift-summary-item-score text-yellow-300">Score: <span className="font-bold">{attempt ? attempt.score : "-"}</span></span>
         <span className="gift-summary-item-status text-yellow-400">
-          {progress ? (progress.completed ? "Completed" : "In Progress") : "Not Started"}
+          {progress ? (progress.completed ? "Completed" : "In Progress") : ""}
         </span>
       </li>
     );
@@ -139,7 +139,7 @@ export default function GiftSummaryPage() {
           <h2 className="fancyTitle text-green-400 mb-2">Join ISKCON Hyderabad WhatsApp Group</h2>
           <p className="text-yellow-200 mb-4">Click the button below to join our WhatsApp group and stay connected!</p>
           <a
-            href="https://chat.whatsapp.com/KXoXsdQyzaDA4rLRFPb0cn?mode=ac_t"
+            href="https://chat.whatsapp.com/Juu3DsDUm6g9TZUumb3APb?mode=ems_copy_c"
             target="_blank"
             rel="noopener noreferrer"
             className="option optionFancy optionFull flex items-center justify-center gap-2 bg-green-700 hover:bg-green-600 text-white font-bold rounded-full px-6 py-3 shadow-lg transition"
