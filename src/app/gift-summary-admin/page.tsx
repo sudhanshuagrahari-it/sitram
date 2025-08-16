@@ -166,7 +166,7 @@ export default function GiftSummaryAdminPage() {
                   <div className="quiz-section mb-4">
                     <div className="quiz-section-title text-yellow-400 text-lg font-bold mb-2 border-b border-yellow-400">8P Quiz</div>
                     <ul className="gift-summary-list">
-                      {summary.quiz.filter(q => q.title.startsWith('P')).map((q:any, idx:number) => {
+                      {summary.quiz.filter((q: any) => q.title.startsWith('P')).map((q:any, idx:number) => {
                         const attempt = summary.attempts.find((a: any) => a.quizId === q.id);
     const progress = summary.progresses.find((p: any) => p.pName.toLowerCase() === q.type.toLowerCase());
                         return (
