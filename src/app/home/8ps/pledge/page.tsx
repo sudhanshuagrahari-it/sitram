@@ -4,9 +4,11 @@ import { ProgressBarFloating } from "../../../../components/ProgressBarFloating"
 import PsMenuBar from "../PsMenuBar";
 import "../../home-custom.css";
 import { isValidPhoneNumber } from "libphonenumber-js";
+import { useRouter } from "next/navigation";
 
 
 function PledgePage() {
+  const router = useRouter();
   // Progress state for all Ps
   const [progress, setProgress] = useState<{ [key: string]: number }>({});
   const [userId, setUserId] = useState<string | null>(null);
@@ -52,6 +54,7 @@ function PledgePage() {
         </div>
       <div className="content-overlay">
         <div className="homeCustomBox flex flex-col items-center mx-auto">
+          <button className="back-btn" onClick={() => router.push("/home/8ps")}>← Back to 8Ps</button>
           <h2 className="fancyTitle">Pledge</h2>
           <p className="text-lg mt-2">Sacred vows: Make your sacred pledge and strengthen your spiritual resolve.</p>
           {/* <img src="/images/pledge.png" alt="Pledge" className="mt-6 rounded-xl shadow-lg w-64" /> */}
@@ -63,6 +66,10 @@ function PledgePage() {
               <li>Participate in regular temple programs.</li>
             </ul>
           </div>
+
+          <div className="shloka-nav-btns">
+          <button className="nav-btn prev-btn" onClick={() => router.push(`/home/8ps/perceive`)}>Previous P</button>
+        </div>
           <PledgeQuiz />
         </div>
       </div>

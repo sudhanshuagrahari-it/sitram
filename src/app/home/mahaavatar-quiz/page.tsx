@@ -15,7 +15,7 @@ const TOTAL_PS = 8;
 
 const questions = [
   { id: 1, type: "text", text: "Whose name made stones float, whose touch made stone alive, who rescued stone heavy heart from an ocean of sorrow across ocean", answer: "Rama" },
-  { id: 2, type: "text", text: "Today is His brother’s birthday/Has all attributes of Krishna except colour", answer: "Balaram" },
+  { id: 2, type: "text", text: "Has all attributes of Krishna except colour", answer: "Balaram" },
   { id: 3, type: "text", text: "neither in night nor in day; neither inside nor outside; neither living nor dead", answer: "Narasimha" },
   { id: 4, type: "text", text: "The RESCUER of MOTHER EARTH", answer: "Varaha" },
   { id: 5, type: "text", text: "one who covered entire universe with 2 steps", answer: "Vamana" },

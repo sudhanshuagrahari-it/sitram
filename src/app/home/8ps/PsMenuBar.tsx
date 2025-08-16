@@ -6,11 +6,11 @@ const psList = [
   { name: "Prepare", href: "/home/8ps/prepare" },
   { name: "Pray", href: "/home/8ps/pray" },
   { name: "Perform", href: "/home/8ps/perform" },
-  { name: "Pledge", href: "/home/8ps/pledge" },
+  { name: "Participate", href: "/home/8ps/participate" },
+  { name: "Purchase", href: "/home/8ps/purchase" },
   { name: "Perfect", href: "/home/8ps/perfect" },
   { name: "Perceive", href: "/home/8ps/perceive" },
-  { name: "Purchase", href: "/home/8ps/purchase" },
-  { name: "Participate", href: "/home/8ps/participate" },
+  { name: "Pledge", href: "/home/8ps/pledge" },
 ];
 
 export default function PsMenuBar() {

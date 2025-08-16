@@ -4,9 +4,10 @@ import { ProgressBarFloating } from "../../../../components/ProgressBarFloating"
 import PsMenuBar from "../PsMenuBar";
 import "../../home-custom.css";
 import { isValidPhoneNumber } from "libphonenumber-js";
-
+import { useRouter } from "next/navigation";
 
 function PreparePage() {
+  const router = useRouter();
   // Progress state for all Ps
   const [progress, setProgress] = useState<{ [key: string]: number }>({});
   const [userId, setUserId] = useState<string | null>(null);
@@ -46,12 +47,18 @@ function PreparePage() {
         />
       <div className="content-overlay">
         <div className="homeCustomBox flex flex-col items-center mx-auto">
+          <button className="back-btn" onClick={() => router.push("/home/8ps")}>← Back to 8Ps</button>
           <h2 className="fancyTitle">Prepare for Janmashtami</h2>
           {/* <img src="/images/prepare.png" alt="Prepare" className="mt-6 rounded-xl shadow-lg w-64" /> */}
           <div className="mt-6 text-base max-w-2xl text-center">
             <p>Janmashtami is the divine appearance day of Lord Sri Krishna, the Supreme Personality of Godhead. He appeared as the 8th child of Vasudeva and Devaki. The 7th child was Lord Balarama, symbolizing the spiritual master (Guru). The first six pregnancies of Devaki were destroyed—representing the six anarthas: <b>Kama</b> (lust), <b>Krodha</b> (anger), <b>Lobha</b> (greed), <b>Moha</b> (illusion), <b>Mada</b> (pride), and <b>Matsarya</b> (envy).</p>
             <p className="mt-4">When these impurities are cleansed from our hearts and we take shelter of the spiritual master (Balarama), Krishna can appear in our hearts and lives too.</p>
           </div>
+
+          <div className="shloka-nav-btns">
+          
+          <button className="nav-btn next-btn" onClick={() => router.push(`/home/8ps/pray`)}>Next P</button>
+        </div>
           <FancyQuiz />
         </div>
       </div>

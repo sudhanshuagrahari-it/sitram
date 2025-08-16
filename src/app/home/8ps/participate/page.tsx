@@ -4,9 +4,11 @@ import PsMenuBar from "../PsMenuBar";
 import { ProgressBarFloating } from "../../../../components/ProgressBarFloating";
 import "../../home-custom.css";
 import { isValidPhoneNumber } from "libphonenumber-js";
+import { useRouter } from "next/navigation";
 
 
 function ParticipatePage() {
+  const router = useRouter();
   // Progress state for all Ps
   const [progress, setProgress] = useState<{ [key: string]: number }>({});
   const [userId, setUserId] = useState<string | null>(null);
@@ -46,12 +48,18 @@ function ParticipatePage() {
       />
       <div className="content-overlay">
         <div className="homeCustomBox flex flex-col items-center mx-auto">
+          <button className="back-btn" onClick={() => router.push("/home/8ps")}>← Back to 8Ps</button>
           <h2 className="fancyTitle">Participate</h2>
           {/* <img src="/images/participate.png" alt="Participate" className="mt-6 rounded-xl shadow-lg w-64" /> */}
           <div className="mt-6 text-base max-w-2xl text-center">
             <p>In any activity, we seek happiness. But material happiness is temporary and often leads to problems. <b>Spiritual activities</b> like <b>kirtan</b>, <b>chanting</b>, and <b>seva</b> uplift consciousness, enrich happiness, and purify existence.</p>
             <p className="mt-4">True participation means not just collecting information but undergoing transformation: <i>Asato ma sad gamaya, Tamaso ma jyotir gamaya, Mrityor ma amritam gamaya</i>.</p>
           </div>
+
+          <div className="shloka-nav-btns">
+          <button className="nav-btn prev-btn" onClick={() => router.push(`/home/8ps/pray`)}>Previous P</button>
+          <button className="nav-btn next-btn" onClick={() => router.push(`/home/8ps/purchase`)}>Next P </button>
+        </div>
           <ParticipateQuiz />
         </div>
       </div>

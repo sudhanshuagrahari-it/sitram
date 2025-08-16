@@ -4,8 +4,10 @@ import PsMenuBar from "../PsMenuBar";
 import { ProgressBarFloating } from "../../../../components/ProgressBarFloating";
 import "../../home-custom.css";
 import { isValidPhoneNumber } from "libphonenumber-js";
+import { useRouter } from "next/navigation";
 
 export default function PerfectPage() {
+  const router = useRouter();
   const [progress, setProgress] = React.useState<{ [key: string]: number }>({});
   const psList = [
     "Prepare", "Pray", "Perform", "Participate", "Purchase", "Perfect", "Perceive", "Pledge"
@@ -38,6 +40,7 @@ export default function PerfectPage() {
       />
       <div className="content-overlay">
         <div className="homeCustomBox flex flex-col items-center mx-auto">
+          <button className="back-btn" onClick={() => router.push("/home/8ps")}>← Back to 8Ps</button>
           <h2 className="fancyTitle">Perfect</h2>
           <p className="text-lg mt-2">Spiritual programs: Attend and perfect your spiritual journey through programs.</p>
           {/* <img src="/images/perfect.png" alt="Perfect" className="mt-6 rounded-xl shadow-lg w-64" /> */}
@@ -46,6 +49,11 @@ export default function PerfectPage() {
 This is about <b>sustaining the connection</b> we felt during the festival and turning it into a lifestyle.
 </p>
           </div>
+
+          <div className="shloka-nav-btns">
+          <button className="nav-btn prev-btn" onClick={() => router.push(`/home/8ps/purchase`)}>Previous P</button>
+          <button className="nav-btn next-btn" onClick={() => router.push(`/home/8ps/perceive`)}>Next P</button>
+        </div>
         <PerfectQuiz />
         </div>
       </div>

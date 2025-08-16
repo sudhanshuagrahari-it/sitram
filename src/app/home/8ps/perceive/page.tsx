@@ -4,8 +4,10 @@ import PsMenuBar from "../PsMenuBar";
 import { ProgressBarFloating } from "../../../../components/ProgressBarFloating";
 import "../../home-custom.css";
 import { isValidPhoneNumber } from "libphonenumber-js";
+import { useRouter } from "next/navigation";
 
 function PerceivePage() {
+  const router = useRouter();
   const [progress, setProgress] = useState<{ [key: string]: number }>({});
   const [userId, setUserId] = useState<string | null>(null);
 
@@ -43,6 +45,7 @@ function PerceivePage() {
         />
       <div className="content-overlay">
         <div className="homeCustomBox flex flex-col items-center mx-auto">
+          <button className="back-btn" onClick={() => router.push("/home/8ps")}>← Back to 8Ps</button>
           <h2 className="fancyTitle">Perceive</h2>
           <p className="text-lg mt-2">Divine gallery: Experience the divine through images and stories.</p>
           {/* <img src="/images/perceive.png" alt="Perceive" className="mt-6 rounded-xl shadow-lg w-64" /> */}
@@ -51,6 +54,11 @@ function PerceivePage() {
             <p className="mt-4">View <b>Abhay Charan series, Prabhupada’s darshan gallery</b>, and short lectures.</p>
             <p className="mt-4">Understand how one <b>pure devotee</b> can change the destiny of the world.</p>
           </div>
+
+          <div className="shloka-nav-btns">
+          <button className="nav-btn prev-btn" onClick={() => router.push(`/home/8ps/perfect`)}>Previous P</button>
+          <button className="nav-btn next-btn" onClick={() => router.push(`/home/8ps/pledge`)}>Next P</button>
+        </div>
           <PerceiveQuiz />
         </div>
       </div>

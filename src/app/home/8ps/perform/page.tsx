@@ -4,8 +4,10 @@ import { ProgressBarFloating } from "../../../../components/ProgressBarFloating"
 import PsMenuBar from "../PsMenuBar";
 import "../../home-custom.css";
 import { isValidPhoneNumber } from "libphonenumber-js";
+import { useRouter } from "next/navigation";
 
 function PerformPage() {
+  const router = useRouter();
   // Progress state for all Ps
   const [progress, setProgress] = useState<{ [key: string]: number }>({});
   const [userId, setUserId] = useState<string | null>(null);
@@ -45,6 +47,7 @@ function PerformPage() {
         />
       <div className="content-overlay">
         <div className="homeCustomBox flex flex-col items-center mx-auto">
+          <button className="back-btn" onClick={() => router.push("/home/8ps")}>← Back to 8Ps</button>
           <h2 className="fancyTitle">Perform: Intent & Content</h2>
           {/* <img src="/images/perform.png" alt="Perform" className="mt-6 rounded-xl shadow-lg w-64" /> */}
 
@@ -65,6 +68,11 @@ function PerformPage() {
             </ul>
             <p className="mt-4">—the very elements that make up our body.</p>
           </div>
+
+          <div className="shloka-nav-btns">
+          <button className="nav-btn prev-btn" onClick={() => router.push(`/home/8ps/pray`)}>Previous P</button>
+          <button className="nav-btn next-btn" onClick={() => router.push(`/home/8ps/participate`)}>Next P</button>
+        </div>
           <PerformQuiz />
         </div>
       </div>

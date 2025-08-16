@@ -4,9 +4,10 @@ import { ProgressBarFloating } from "../../../../components/ProgressBarFloating"
 import PsMenuBar from "../PsMenuBar";
 import "../../home-custom.css";
 import { isValidPhoneNumber } from "libphonenumber-js";
-
+import { useRouter } from "next/navigation";
 
 function PrayPage() {
+  const router = useRouter();
   // Progress state for all Ps
   const [progress, setProgress] = useState<{ [key: string]: number }>({});
   const [userId, setUserId] = useState<string | null>(null);
@@ -46,6 +47,7 @@ function PrayPage() {
         />
       <div className="content-overlay">
         <div className="homeCustomBox flex flex-col items-center mx-auto">
+          <button className="back-btn" onClick={() => router.push("/home/8ps")}>← Back to 8Ps</button>
           <h2 className="fancyTitle">Pray</h2>
           {/* <img src="/images/pray.png" alt="Pray" className="mt-6 rounded-xl shadow-lg w-64" /> */}
           <div className="mt-6 text-base max-w-2xl text-center">
@@ -55,6 +57,11 @@ function PrayPage() {
               <li><b>Ravana vs Hanuman</b> – Ravana separated Lord Rama from Sita (bhoga vritti), Hanuman united Them (seva vritti).</li>
             </ul>
           </div>
+
+          <div className="shloka-nav-btns">
+          <button className="nav-btn prev-btn" onClick={() => router.push(`/home/8ps/prepare`)}>Previous P</button>
+          <button className="nav-btn next-btn" onClick={() => router.push(`/home/8ps/perform`)}>Next P</button>
+        </div>
           <PrayQuiz />
         </div>
       </div>
