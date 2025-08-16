@@ -163,7 +163,10 @@ export default function GiftSummaryAdminPage() {
             ) : (
               <ul className="mb-4">
                 {summary.progresses.map((p: any, idx: number) => {
-                  const attempt = summary.attempts?.find((a: any) => a.quizId === p.pName);
+                  let attempt:any;
+                  summary?.quiz.map((q: any) => {
+                    attempt = summary?.attempts?.find((a: any) => a.quizId === q.id);
+                  });
                   return (
                     <li key={idx} className="flex gap-3 items-center mb-1">
                       <span className="font-bold text-yellow-200">{p.pName}</span>

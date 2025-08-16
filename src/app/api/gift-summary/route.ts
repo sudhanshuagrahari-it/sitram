@@ -30,11 +30,14 @@ export async function GET(req: NextRequest) {
     const progresses = await prisma.progress.findMany({ where: { userId: user?.id } });
     const attempts = await prisma.quizAttempt.findMany({ where: { userId: user?.id } });
 
+    const quiz = await prisma.quiz.findMany();
+
     return NextResponse.json({
       cartItems,
       gitaRegs,
       progresses,
       attempts,
+      quiz,
     });
   } catch (e) {
     const errorMessage = e instanceof Error ? e.message : String(e);

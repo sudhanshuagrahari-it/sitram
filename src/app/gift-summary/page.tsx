@@ -6,6 +6,7 @@ import Image from "next/image";
 
 export default function GiftSummaryPage() {
   const [cartItems, setCartItems] = useState<any[]>([]);
+  const [quiz, setQuiz] = useState<any[]>([]);
   const [gitaRegs, setGitaRegs] = useState<any[]>([]);
   const [japaCount, setJapaCount] = useState<number>(0);
   const [progresses, setProgresses] = useState<any[]>([]);
@@ -33,6 +34,7 @@ export default function GiftSummaryPage() {
     fetch(`/api/gift-summary?mobile=${encodeURIComponent(userMobile)}`)
       .then(res => res.json())
       .then(data => {
+        setQuiz(data.quiz || []);
         setCartItems(data.cartItems || []);
         setGitaRegs(data.gitaRegs || []);
         setProgresses(data.progresses || []);
@@ -113,7 +115,11 @@ export default function GiftSummaryPage() {
               ) : (
                 <ul className="gift-summary-list">
                   {progresses.map((p, idx) => {
-                    const attempt = attempts.find(a => a.quizId === p.pName);
+                    let attempt: any;
+                    quiz.map((q: any) => {
+                      attempt = attempts.find((a: any) => a.quizId === q.id);
+                    });
+                    // const attempt = attempts.find(a => a.quizId === p.pName);
                     return (
                       <li key={idx} className="gift-summary-list-item flex gap-3 items-center">
                         <span className="gift-summary-item-title font-bold text-yellow-200">{p.pName}</span>
