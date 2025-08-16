@@ -164,7 +164,7 @@ export default function GiftSummaryAdminPage() {
               <div>
                 <ul className="gift-summary-list">
                   {summary.quiz.map((q: any, idx: number) => {
-                    const attempt = summary.attempts.find(a => a.quizId === q.id);
+                    const attempt = summary.attempts.find((a: any) => a.quizId === q.id);
                     return (
                       <li key={idx} className="gift-summary-list-item flex gap-3 items-center">
                         <span className="gift-summary-item-title font-bold text-yellow-200">{q.title}</span>
