@@ -47,6 +47,18 @@ export default function JapaChallengePage() {
     setPlayCount(prev => {
       const next = prev + 1;
       localStorage.setItem('chantCount', next.toString());
+      // Save to DB if user info exists and count is multiple of 9
+      const userInfo = localStorage.getItem('userInfo');
+      if (userInfo && next % 9 === 0) {
+        const mobile = JSON.parse(userInfo).mobile;
+        if (mobile) {
+          fetch('/api/japa/save', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ mobile, chantCount: next }),
+          });
+        }
+      }
       return next;
     });
     setIsPlaying(true);

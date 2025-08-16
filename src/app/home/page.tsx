@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import "./home-custom.css";
 import Link from "next/link";
 import Image from "next/image";
-import { FaWhatsapp, FaBookOpen, FaGift, FaCamera, FaChalkboardTeacher, FaPrayingHands, FaShoppingBasket, FaDonate, FaListAlt } from "react-icons/fa";
+import { FaWhatsapp, FaBookOpen, FaGift, FaCamera,FaOm, FaChalkboardTeacher, FaPrayingHands, FaShoppingBasket, FaDonate, FaListAlt } from "react-icons/fa";
 import { GiPrayerBeads } from "react-icons/gi";
 
 export default function HomePage() {
@@ -39,7 +39,7 @@ export default function HomePage() {
             <span className="home-tile-desc">Mahaavatar Quiz</span>
           </Link>
           <Link href="/home/shloka-contest" className="home-tile home-tile-contest">
-            <FaChalkboardTeacher className="home-tile-icon" />
+            <FaOm className="home-tile-icon" />
             <span className="home-tile-title">Contest</span>
             <span className="home-tile-desc">Shloka Contest</span>
           </Link>
